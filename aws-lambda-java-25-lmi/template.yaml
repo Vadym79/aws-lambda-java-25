@@ -1,0 +1,179 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  AWSLambdaWithJava25AndLMI
+  Sample SAM Template
+
+Parameters:
+  Stage:
+    Type: String
+    Default: prod
+    
+Globals:
+  Function:
+    CapacityProviderConfig:
+       Arn: !Sub ${MyCapacityProvider.Arn}
+       ExecutionEnvironmentMemoryGiBPerVCpu: 2
+       PerExecutionEnvironmentMaxConcurrency: 32
+    FunctionScalingConfig:
+       MinExecutionEnvironments: 0
+       MaxExecutionEnvironments: 0
+    CodeUri: target/aws-lambda-java-25-lmi-1.0.0-SNAPSHOT.jar
+    Runtime: java25
+    Timeout: 30 
+    MemorySize: 2048
+    Architectures:
+      #- arm64
+      - x86_64  
+    #Tracing: Active
+    Environment:
+      Variables:
+        REGION: !Sub ${AWS::Region}
+        PRODUCT_TABLE_NAME: !Ref ProductsTable
+
+Resources:
+  MyCapacityProvider:
+    Type: AWS::Serverless::CapacityProvider
+    Properties:
+      CapacityProviderName: CapacityProviderForJava25LMI
+      ScalingConfig:
+        MaxVCpuCount: 16
+        AverageCPUUtilization: 70.0
+      InstanceRequirements:
+        Architectures:
+           - x86_64
+        AllowedTypes:
+           - m7a.large
+           - m6a.large
+      VpcConfig: 
+        SubnetIds:
+          - subnet-da8ae881
+          - subnet-f0b73f95
+          - subnet-bdcfba90
+        SecurityGroupIds:
+          - sg-373bd04b
+
+  MyApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Stage
+      #TracingEnabled: true
+      Name: AWSLambdaJava25WithLMI
+      Description: Api for AWSLambdaJava25WithLMI
+      AccessLogSetting:
+        DestinationArn: !Sub ${MyApiLogGroup.Arn} # This Log Group is already created within our SAM Template
+        Format: "{'integrationLatency':'$context.integrationLatency', 'latency':'$context.responseLatency', 'requestId':'$context.requestId', 'ip': '$context.identity.sourceIp', 'caller':'$context.identity.caller', 'user':'$context.identity.user','requestTime':'$context.requestTime', 'xrayTraceId':'$context.xrayTraceId', 'wafResponseCode':'$context.wafResponseCode', 'httpMethod':'$context.httpMethod','resourcePath':'$context.resourcePath', 'status':'$context.status','protocol':'$context.protocol', 'responseLength':'$context.responseLength' }"
+      #MethodSettings:
+       # - MetricsEnabled: True
+       #   ResourcePath: '/*'
+       #   HttpMethod: '*'
+      Auth:
+        ApiKeyRequired: true  # sets for all methods
+  
+      
+        
+  MyApiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+       LogGroupName: !Sub "/aws/apigateway/${MyApi}"
+       RetentionInDays: 7
+      
+  MyApiUsagePlan:
+     Type: AWS::ApiGateway::UsagePlan
+     DependsOn:  
+        - MyApiStage
+     Properties:
+      ApiStages: 
+        - ApiId: !Ref MyApi
+          Stage: !Ref Stage
+      UsagePlanName: AWSLambdaJava25WithLMIAPIUsagePlan
+      Description: Usage plan for AWSLambdaJava25WithLMIAPI
+      Quota:
+          Limit: 500000
+          Period: DAY
+      Throttle:
+          RateLimit:  10000
+          BurstLimit: 5000   
+
+  MyApiKey: 
+    Type: AWS::ApiGateway::ApiKey
+    DependsOn:  
+       - MyApiStage
+    Properties: 
+      Name: "AWSLambdaJava25WithLMIApiKey"
+      Description: "AWSLambdaJava25WithLMI API Key"
+      Enabled: true
+      GenerateDistinctId: false
+      Value: a6ZbcDefQW12BN56WEV7LMI
+      StageKeys:
+        - RestApiId: !Ref MyApi
+          StageName: !Ref Stage
+
+  MyApiUsagePlanKey:
+      Type: "AWS::ApiGateway::UsagePlanKey"
+      DependsOn: 
+      - MyApi
+      Properties:
+        KeyId: !Ref MyApiKey
+        KeyType: API_KEY
+        UsagePlanId: !Ref MyApiUsagePlan
+
+
+  GetProductByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithLMI
+      Handler: software.amazonaws.example.product.handler.GetProductByIdHandler::handleRequest
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products/{id}
+            Method: get     
+            
+
+ 
+  PostProductFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PostProductJava25WithLMI 
+      Handler: software.amazonaws.example.product.handler.CreateProductHandler::handleRequest
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        PutRequest:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /products
+            Method: post
+
+
+
+  ProductsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: "AWSLambdaJava25WithLMIProductsTable"
+      PointInTimeRecoverySpecification:
+         PointInTimeRecoveryEnabled: true
+      AttributeDefinitions:
+        - AttributeName: 'PK'
+          AttributeType: 'S'
+      KeySchema:
+        - AttributeName: 'PK'
+          KeyType: 'HASH'
+      BillingMode: PAY_PER_REQUEST    
+      #ProvisionedThroughput: 
+        #ReadCapacityUnits: "1"
+        #WriteCapacityUnits: "1"
+      
+
+Outputs:
+  AWSLambdaJava25WithLMIApiEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for AWS Lambda Java 25 with LMI"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"
