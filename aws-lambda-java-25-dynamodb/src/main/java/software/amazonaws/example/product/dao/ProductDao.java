@@ -21,6 +21,7 @@ import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.GetItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.PutItemRequest;
 import software.amazon.awssdk.services.dynamodb.model.ScanRequest;
+//import software.amazon.awssdk.http.apache5.Apache5HttpClient;
 import software.amazonaws.example.product.entity.Product;
 import software.amazonaws.example.product.entity.Products;
 
@@ -32,19 +33,20 @@ public class ProductDao  {
   private static final DynamoDbClient dynamoDbClient = DynamoDbClient.builder()
     .credentialsProvider(DefaultCredentialsProvider.builder().build())
     .region(Region.of(REGION.toLowerCase()))
-    //.httpClient(UrlConnectionHttpClient.create())
+    //.httpClient(Apache5HttpClient.builder().build())
     .overrideConfiguration(ClientOverrideConfiguration.builder()
       .build())
     .build();
 
 
   public Optional<Product> getProduct(String id) {
-    var getItemResponse = dynamoDbClient.getItem(GetItemRequest.builder()
+	  var getItemResponse = dynamoDbClient.getItem(GetItemRequest.builder()
       .key(Map.of("PK", AttributeValue.builder().s(id).build()))
       .tableName(PRODUCT_TABLE_NAME)
       .build());
     if (getItemResponse.hasItem()) {
       return Optional.of(ProductMapper.productFromDynamoDB(getItemResponse.item()));
+      
     } else {
       return Optional.empty();
     }

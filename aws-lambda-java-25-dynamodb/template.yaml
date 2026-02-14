@@ -25,7 +25,8 @@ Globals:
       Variables:
         REGION: !Sub ${AWS::Region}
         PRODUCT_TABLE_NAME: !Ref ProductsTable
-
+        JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
+        
 Resources:
 
   MyApi:
@@ -140,6 +141,56 @@ Resources:
     Type: AWS::Logs::LogGroup
     Properties:
       LogGroupName: !Sub "/aws/lambda/${GetProductByIdFunction}"
+      RetentionInDays: 7
+
+
+  GetProductByIdWithDynamoDBPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDynamoDBAndDDBPriming
+      AutoPublishAlias: liveVersion
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithDynamoDBPrimingHandler::handleRequest
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithDynamoDBPriming/{id}
+            Method: get     
+            
+            
+  GetProductByIdWithDynamoDBPrimingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${GetProductByIdWithDynamoDBPrimingFunction}"
+      RetentionInDays: 7
+      
+
+  GetProductByIdWithFullPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDynamoDBAndFullPriming
+      AutoPublishAlias: liveVersion
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithFullPrimingHandler::handleRequest
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref ProductsTable
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithFullPriming/{id}
+            Method: get     
+            
+            
+  GetProductByIdWithFullPrimingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${GetProductByIdWithFullPrimingFunction}"
       RetentionInDays: 7
 
 
