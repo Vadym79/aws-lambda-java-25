@@ -25,6 +25,7 @@ Globals:
     Environment:
       Variables:
         AURORA_DSQL_CLUSTER_ENDPOINT: !Sub ${DSQL}.dsql.${AWS::Region}.on.aws
+        JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
         
              
 Resources:
@@ -153,6 +154,68 @@ Resources:
     Properties:
       LogGroupName: !Sub "/aws/lambda/${GetProductByIdFunction}"
       RetentionInDays: 7
+
+
+  GetProductByIdWithAuroraPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDSQLAndDSQLPriming
+      AutoPublishAlias: liveVersion 
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithDSQLPrimingHandler::handleRequest
+      Policies:
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+            - Effect: Allow
+              Action:
+                - dsql:DbConnectAdmin
+              Resource: 
+                 - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}
+
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithAuroraPriming/{id}
+            Method: get     
+            
+
+  GetProductByIdWithAuroraPrimingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${GetProductByIdWithAuroraPrimingFunction}"
+      RetentionInDays: 7
+
+
+  GetProductByIdWithFullPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDSQLAndFullPriming
+      AutoPublishAlias: liveVersion
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithFullPrimingHandler::handleRequest
+      Policies:
+          Statement:
+            - Effect: Allow
+              Action:
+                - dsql:DbConnectAdmin
+              Resource: 
+                 - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}
+
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithFullPriming/{id}
+            Method: get     
+            
+            
+  GetProductByIdWithFullPrimingFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${GetProductByIdWithFullPrimingFunction}"
+      RetentionInDays: 7
+
 
   DSQL:
     Type: AWS::DSQL::Cluster
