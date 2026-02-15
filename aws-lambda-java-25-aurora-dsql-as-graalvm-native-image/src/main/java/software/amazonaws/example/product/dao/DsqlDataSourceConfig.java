@@ -40,6 +40,7 @@ public class DsqlDataSourceConfig {
     		hds.setJdbcUrl(JDBC_URL);
     		hds.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
     		hds.setMaximumPoolSize(1); // default is 10
+    		hds.setMinimumIdle(1);
         	return hds;
 		   //return new HikariDataSource(config);
         } catch (Exception ex) {
