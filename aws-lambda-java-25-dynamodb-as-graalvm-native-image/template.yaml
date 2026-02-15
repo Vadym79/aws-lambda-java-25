@@ -23,7 +23,6 @@ Globals:
       Variables:
         REGION: !Sub ${AWS::Region}
         PRODUCT_TABLE_NAME: !Ref ProductsTable
-        JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1"
         
 Resources:
 
