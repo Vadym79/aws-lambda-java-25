@@ -60,7 +60,7 @@ public class DsqlDataSourceConfig {
 	 * @throws SQLException
 	 */
 	public static Connection getJDBCConnection() throws SQLException {
-		
+		/*
 		try {
 			Class c1=Class.forName("software.amazon.dsql.jdbc.DSQLConnector");
 			System.out.println("class "+c1);
@@ -73,6 +73,7 @@ public class DsqlDataSourceConfig {
 		} catch (ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
+		*/
 		long startTime = System.currentTimeMillis();
 		if (jdbConnection == null || jdbConnection.isClosed()) {
 			var props = new Properties();
