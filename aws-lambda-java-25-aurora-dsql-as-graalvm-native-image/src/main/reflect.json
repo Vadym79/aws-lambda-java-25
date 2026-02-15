@@ -1,5 +1,11 @@
 [
   {
+    "name": "org.postgresql.Driver",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "software.amazon.dsql.jdbc.DSQLConnector",
     "allDeclaredFields": true,
     "allPublicConstructors": true,
