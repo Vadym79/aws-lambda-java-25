@@ -75,8 +75,11 @@ public class HikariDataSource extends HikariConfig implements DataSource, Closea
     */
    public HikariDataSource(HikariConfig configuration)
    {
+	  System.out.println("JDBCCC URL "+configuration.getJdbcUrl()); 
       configuration.validate();
       configuration.copyStateTo(this);
+      System.out.println("JDBCCC URL this "+this.getJdbcUrl()); 
+      
 
       LOGGER.info("{} - Starting...", configuration.getPoolName());
       pool = fastPathPool = new HikariPool(this);

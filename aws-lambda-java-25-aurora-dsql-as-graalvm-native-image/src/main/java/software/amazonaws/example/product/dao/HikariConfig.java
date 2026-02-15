@@ -966,9 +966,12 @@ public class HikariConfig implements HikariConfigMXBean
    {
       for (var field : HikariConfig.class.getDeclaredFields()) {
          try {
+        	 System.out.println(" field "+field);
             if (!Modifier.isFinal(field.getModifiers())) {
+            	System.out.println(" field is final "+field);
                field.setAccessible(true);
                field.set(other, field.get(this));
+               System.out.println(" set "+field.get(this));
             } else if (field.getType().isAssignableFrom(AtomicReference.class)) {
                ((AtomicReference) field.get(other)).set(((AtomicReference) field.get(this)).get());
             }

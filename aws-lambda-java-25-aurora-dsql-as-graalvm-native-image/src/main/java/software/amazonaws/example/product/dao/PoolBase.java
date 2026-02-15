@@ -99,6 +99,7 @@ abstract class PoolBase
    {
       this.config = config;
 
+      System.out.println("JDBCCC URL poolbase "+this.config.getJdbcUrl()); 
       this.networkTimeout = UNINITIALIZED;
       this.catalog = config.getCatalog();
       this.schema = config.getSchema();
