@@ -1,7 +1,7 @@
 [
   {
     "name": "software.amazon.dsql.jdbc.DSQLConnector",
-    "allDeclaredFields": true
+    "allDeclaredFields": true,
     "allPublicConstructors": true,
     "allPublicMethods": true
   },
