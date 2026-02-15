@@ -13,8 +13,8 @@ Globals:
   Function:
     CodeUri: target/aws-lambda-java-25-with-dynamodb-1.0.0-SNAPSHOT.jar
     Runtime: java25
-    #SnapStart:
-      #ApplyOn: PublishedVersions 
+    SnapStart:
+      ApplyOn: PublishedVersions 
     Timeout: 30 
     MemorySize: 1024
     Architectures:
@@ -62,8 +62,8 @@ Resources:
       ApiStages: 
         - ApiId: !Ref MyApi
           Stage: !Ref Stage
-      UsagePlanName: AWSLambdaJava25WitDynamoDBUsagePlan
-      Description: Usage plan for AWSLambdaJava25WithDynamoDBIAPI
+      UsagePlanName: AWSLambdaJava25WithDynamoDBUsagePlan
+      Description: Usage plan for AWSLambdaJava25WithDynamoDBAPI
       Quota:
           Limit: 2000000
           Period: DAY
@@ -76,7 +76,7 @@ Resources:
     DependsOn:  
        - MyApiStage
     Properties: 
-      Name: "AWSLambdaJava25WithAuroraDynamoDBAPIKey"
+      Name: "AWSLambdaJava25WithDynamoDBAPIKey"
       Description: "AWSLambdaJava25WithDynamoDB API Key"
       Enabled: true
       GenerateDistinctId: false
