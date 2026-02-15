@@ -1,5 +1,17 @@
 [
   {
+    "name": "com.zaxxer.hikari.pool.PoolEntry",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
+    "name": "com.zaxxer.hikari.util.ConcurrentBag",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "org.postgresql.Driver",
     "allDeclaredFields": true,
     "allPublicConstructors": true,
