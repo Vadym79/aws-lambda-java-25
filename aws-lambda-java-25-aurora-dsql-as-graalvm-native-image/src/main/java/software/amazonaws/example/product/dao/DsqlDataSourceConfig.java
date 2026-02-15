@@ -34,18 +34,23 @@ public class DsqlDataSourceConfig {
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
 		config.setMaximumPoolSize(1); // default is 10
         try {
-        	HikariDataSource hds= new HikariDataSource();
+        	
+        	
+        	/*
         	hds.setUsername("admin");
     		
     		hds.setJdbcUrl(JDBC_URL);
     		hds.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
     		hds.setMaximumPoolSize(1); // default is 10
-    		hds.setMinimumIdle(1);
+    		hds.setMinimumIdle(1);´
+    		*/
+        	HikariDataSource hds= new HikariDataSource(config);
     		System.out.println("url: "+hds.getJdbcUrl());
     		System.out.println("ds: "+hds.getDataSource());
     		System.out.println("ds class name: "+hds.getDataSourceClassName());
-        	return hds;
-		   //return new HikariDataSource(config);
+        	
+    		return hds;
+		    
         } catch (Exception ex) {
         	ex.printStackTrace();
         	System.out.println("error message : "+ex.getMessage());

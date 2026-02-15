@@ -35,6 +35,7 @@ public class GetProductByIdHandler
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK)
 					.withBody(objectMapper.writeValueAsString(optionalProduct.get()));
 		} catch (Exception je) {
+			context.getLogger().log(" Error occured: " +je.getMessage());
 			je.printStackTrace();
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.INTERNAL_SERVER_ERROR)
 					.withBody("Internal Server Error :: " + je.getMessage());
