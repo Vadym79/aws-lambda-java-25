@@ -72,7 +72,7 @@ public class ProductDao {
 	
 	
 	private static final Connection getConnection() throws SQLException {
-		 //return DsqlDataSourceConfig.getPooledConnection();
-		return DsqlDataSourceConfig.getJDBCConnection();
+		 return DsqlDataSourceConfig.getPooledConnection();
+		 //return DsqlDataSourceConfig.getJDBCConnection();
 	}
 }
