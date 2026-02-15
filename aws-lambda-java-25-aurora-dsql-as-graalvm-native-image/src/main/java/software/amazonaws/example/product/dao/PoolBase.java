@@ -403,7 +403,7 @@ abstract class PoolBase
     */
    private void setupConnection(final Connection connection) throws ConnectionSetupException
    {
-	   System.out.println("conn here "connection);
+	   System.out.println("conn here "+connection);
       try {
          if (networkTimeout == UNINITIALIZED) {
         	 System.out.println("before net time"); 
