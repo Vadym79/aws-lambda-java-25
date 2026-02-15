@@ -38,9 +38,8 @@ public class DsqlDataSourceConfig {
         } catch (Exception ex) {
         	ex.printStackTrace();
         	System.out.println("error message : "+ex.getMessage());
-        	System.out.println("error stack trace : "+ex.getStackTrace());
+        	throw ex;
         }
-		return null;
 	}
 		
 	/**
