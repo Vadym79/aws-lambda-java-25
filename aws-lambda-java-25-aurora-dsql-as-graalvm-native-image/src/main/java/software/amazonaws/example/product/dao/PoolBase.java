@@ -357,7 +357,9 @@ abstract class PoolBase
             throw new SQLTransientConnectionException("DataSource returned null unexpectedly");
          }
 
+         System.out.println("new Conn "+connection);
          setupConnection(connection);
+         
 
          lastConnectionFailure.set(null);
          connectionFailureTimestamp.set(0);
@@ -366,6 +368,7 @@ abstract class PoolBase
          return connection;
       }
       catch (Throwable t) {
+    	 System.out.println("error "+t.getMessage()); 
          logger.debug("{} - Failed to create/setup connection ({}): {}", poolName, id, t.getMessage());
 
          connectionFailureTimestamp.compareAndSet(0, start);

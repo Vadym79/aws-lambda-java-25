@@ -479,7 +479,7 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
    {
       try {
          final var poolEntry = newPoolEntry(getTotalConnections() == 0);
-
+         System.out.println("pool entry "+poolEntry);
          final var maxLifetime = config.getMaxLifetime();
          if (maxLifetime > 0) {
             // default variance upto 25% of the maxLifetime (random)
@@ -564,9 +564,11 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
          return;
       }
 
+      System.out.println("check fast");
       final var startTime = currentTime();
       do {
          final var poolEntry = createPoolEntry();
+         System.out.println("check fast "+poolEntry);
          if (poolEntry != null) {
             if (config.getMinimumIdle() > 0) {
                connectionBag.add(poolEntry);
