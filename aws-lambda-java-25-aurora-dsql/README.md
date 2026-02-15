@@ -9,7 +9,7 @@
 
 ```bash
 
-Clone git repository locally
+## Clone git repository locally  
 git clone https://github.com/Vadym79/aws-lambda-java-25.git
 
 ## Switch to the aws-lambda-java-25-aurora-dsql directory  
@@ -17,7 +17,7 @@ git clone https://github.com/Vadym79/aws-lambda-java-25.git
 
 mvn clean package
 
-Deploy your application with AWS SAM
+## Deploy your application with AWS SAM  
 sam deploy -g --region us-east-1
 
 ```
