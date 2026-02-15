@@ -968,7 +968,7 @@ public class HikariConfig implements HikariConfigMXBean
          try {
         	 System.out.println(" field "+field);
             if (!Modifier.isFinal(field.getModifiers())) {
-            	System.out.println(" field is final "+field);
+            	System.out.println(" field is not final "+field);
                field.setAccessible(true);
                field.set(other, field.get(this));
                System.out.println(" set "+field.get(this));
