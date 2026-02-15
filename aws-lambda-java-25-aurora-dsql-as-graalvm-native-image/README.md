@@ -36,8 +36,8 @@ Set JAVA_HOME variable, for example export JAVA_HOME=/home/ec2-user/.sdkman/cand
 
 mvn clean package
 
-Deploy your application with AWS SAM
-sam deploy -g --region us-east-1
+## Deploy your application with AWS SAM  
+sam deploy -g --region us-east-1  
 
 ```
 
