@@ -360,11 +360,14 @@ abstract class PoolBase
          System.out.println("new Conn "+connection);
          setupConnection(connection);
          
+         System.out.println("new Conn set up"+connection);
 
          lastConnectionFailure.set(null);
+         System.out.println("last conn failure");
          connectionFailureTimestamp.set(0);
 
          logger.debug("{} - Established new connection ({})", poolName, id);
+         System.out.println("return "+connection);
          return connection;
       }
       catch (Throwable t) {
@@ -400,40 +403,50 @@ abstract class PoolBase
     */
    private void setupConnection(final Connection connection) throws ConnectionSetupException
    {
+	   System.out.println("conn here "connection);
       try {
          if (networkTimeout == UNINITIALIZED) {
+        	 System.out.println("before net time"); 
             networkTimeout = getAndSetNetworkTimeout(connection, validationTimeout);
+            System.out.println("after net time");
          }
          else {
+        	 System.out.println("before else net time");
             setNetworkTimeout(connection, validationTimeout);
+            System.out.println("after else net time");
          }
 
          if (connection.isReadOnly() != isReadOnly) {
             connection.setReadOnly(isReadOnly);
          }
 
+         System.out.println("set read only");
          if (connection.getAutoCommit() != isAutoCommit) {
             connection.setAutoCommit(isAutoCommit);
          }
 
+         System.out.println("before check driver supp");
          checkDriverSupport(connection);
-
+         System.out.println("after check driver supp");
          if (transactionIsolation != defaultTransactionIsolation) {
             //noinspection MagicConstant
             connection.setTransactionIsolation(transactionIsolation);
          }
 
+         System.out.println("before catal");
          if (catalog != null) {
             connection.setCatalog(catalog);
          }
-
+         System.out.println("before set schema");
          if (schema != null) {
             connection.setSchema(schema);
          }
 
+         System.out.println("before exed sql ");
          executeSql(connection, config.getConnectionInitSql(), true);
-
+         System.out.println("after exed sql ");
          setNetworkTimeout(connection, networkTimeout);
+         System.out.println("end ");
       }
       catch (SQLException e) {
          throw new ConnectionSetupException(e);
