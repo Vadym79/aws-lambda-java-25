@@ -486,6 +486,7 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
             final var variance = maxLifetime > 10_000L ? ThreadLocalRandom.current().nextLong( maxLifetime / lifeTimeVarianceFactor ) : 0L;
             final var lifetime = maxLifetime - variance;
             poolEntry.setFutureEol(houseKeepingExecutorService.schedule(new MaxLifetimeTask(poolEntry), lifetime, MILLISECONDS));
+            System.out.println("pool entry liftime");
          }
 
          final long keepaliveTime = config.getKeepaliveTime();
@@ -494,8 +495,10 @@ public final class HikariPool extends PoolBase implements HikariPoolMXBean, IBag
             final var variance = ThreadLocalRandom.current().nextLong(keepaliveTime / 5);
             final var heartbeatTime = keepaliveTime - variance;
             poolEntry.setKeepalive(houseKeepingExecutorService.scheduleWithFixedDelay(new KeepaliveTask(poolEntry), heartbeatTime, heartbeatTime, MILLISECONDS));
+            System.out.println("keep alive");
          }
 
+         System.out.println("ret pool entry "+poolEntry);
          return poolEntry;
       }
       catch (ConnectionSetupException e) {

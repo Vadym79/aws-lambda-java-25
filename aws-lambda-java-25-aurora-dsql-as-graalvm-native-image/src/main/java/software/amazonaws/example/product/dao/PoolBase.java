@@ -145,7 +145,7 @@ abstract class PoolBase
             try (connection) {
                if (!connection.isClosed())
                   setNetworkTimeout(connection, SECONDS.toMillis(15));
-               } catch (SQLException e) {
+            } catch (SQLException e) {
                   // ignore
             }
          }
@@ -208,7 +208,13 @@ abstract class PoolBase
 
    PoolEntry newPoolEntry(final boolean isEmptyPool) throws Exception
    {
-      return new PoolEntry(newConnection(isEmptyPool), this, isReadOnly, isAutoCommit);
+	  System.out.println("pool entry ");
+	  Connection con=newConnection(isEmptyPool);
+	  System.out.println("connection pool entry "+con);
+	  
+      PoolEntry entry= new PoolEntry(con, this, isReadOnly, isAutoCommit);
+      System.out.println("return pool entry "+entry);
+      return entry;
    }
 
    void resetConnectionState(final Connection connection, final ProxyConnection proxyConnection, final int dirtyBits) throws SQLException
