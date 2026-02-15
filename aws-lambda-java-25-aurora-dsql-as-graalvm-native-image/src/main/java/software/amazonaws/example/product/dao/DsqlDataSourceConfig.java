@@ -6,8 +6,8 @@ import java.sql.SQLException;
 //import java.time.Duration;
 import java.util.Properties;
 
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
+//import com.zaxxer.hikari.HikariConfig;
+//import com.zaxxer.hikari.HikariDataSource;
 
 
 public class DsqlDataSourceConfig {
@@ -29,7 +29,7 @@ public class DsqlDataSourceConfig {
 		var config = new HikariConfig();
 		
 		config.setUsername("admin");
-		config.setDriverClassName("software.amazon.dsql.jdbc.DSQLConnector");
+		//config.setDriverClassName("software.amazon.dsql.jdbc.DSQLConnector");
 		System.out.println("JDCB-URL: "+JDBC_URL);
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
