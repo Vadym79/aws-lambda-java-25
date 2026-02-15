@@ -1,10 +1,14 @@
- {
-  "type": "org.postgresql.ssl.DefaultJavaSSLFactory",
-   "methods": [ {
-      "name": "<init>",
-      "parameterTypes": [
-      "java.util.Properties"
+{
+  "reflection": [ 
+  {
+    "type": "org.postgresql.ssl.DefaultJavaSSLFactory",
+      "methods": [ {
+         "name": "<init>",
+         "parameterTypes": [
+           "java.util.Properties"
 	   ] 
       }
-    ]
- }
+     ]
+    }
+  ]
+}
