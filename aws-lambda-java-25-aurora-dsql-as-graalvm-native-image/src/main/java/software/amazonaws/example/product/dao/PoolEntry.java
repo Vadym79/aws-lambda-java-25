@@ -67,9 +67,13 @@ final class PoolEntry implements IConcurrentBagEntry
 	   System.out.println(" init pool entry ");
 		  
       this.connection = connection;
+      System.out.println(" init pool con ");
       this.hikariPool = (HikariPool) pool;
+      System.out.println(" init hik pool ");
       this.isReadOnly = isReadOnly;
+      System.out.println(" read only ");
       this.isAutoCommit = isAutoCommit;
+      System.out.println(" auto comm ");
       this.lastAccessed = currentTime();
       this.openStatements = new FastList<>(Statement.class, 16);
       System.out.println("finished init pool entry ");
