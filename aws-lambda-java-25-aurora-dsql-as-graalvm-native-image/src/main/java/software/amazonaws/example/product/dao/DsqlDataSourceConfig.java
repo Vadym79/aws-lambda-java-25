@@ -27,13 +27,21 @@ public class DsqlDataSourceConfig {
 	
 	private static HikariDataSource initHikariDataSource() {
 		var config = new HikariConfig();
+		
 		config.setUsername("admin");
 		System.out.println("JDCB-URL: "+JDBC_URL);
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
 		config.setMaximumPoolSize(1); // default is 10
         try {
-		 return new HikariDataSource(config);
+        	HikariDataSource hds= new HikariDataSource();
+        	hds.setUsername("admin");
+    		System.out.println("JDCB-URL: "+JDBC_URL);
+    		hds.setJdbcUrl(JDBC_URL);
+    		hds.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
+    		hds.setMaximumPoolSize(1); // default is 10
+        	return hds;
+		   //return new HikariDataSource(config);
         } catch (Exception ex) {
         	ex.printStackTrace();
         	System.out.println("error message : "+ex.getMessage());

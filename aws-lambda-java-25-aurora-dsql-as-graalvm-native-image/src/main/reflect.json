@@ -1,24 +1,5 @@
 [
   {
-    "name": "org.postgresql.Driver",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "org.postgresql.ssl.DefaultJavaSSLFactory",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "software.amazon.dsql.jdbc.DSQLConnector",
-    "allDeclaredFields":true,
-    "queryAllDeclaredMethods":true,
-    "queryAllDeclaredConstructors":true,
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  },
-  {
     "name": "software.amazonaws.example.product.handler.GetProductByIdHandler",
     "allPublicConstructors": true,
     "allPublicMethods": true
