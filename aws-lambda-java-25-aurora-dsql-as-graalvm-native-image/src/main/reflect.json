@@ -12,6 +12,12 @@
     "allPublicMethods": true
   },
   {
+    "name": "org.postgresql.jdbc.PgConnection",
+    "allDeclaredFields": true,
+    "allPublicConstructors": true,
+    "allPublicMethods": true
+  },
+  {
     "name": "org.postgresql.Driver",
     "allDeclaredFields": true,
     "allPublicConstructors": true,
