@@ -22,8 +22,10 @@ public class DsqlDataSourceConfig {
 			+ "&token-duration-secs=900";
 
 	
-	private static HikariDataSource hds;
-	static {
+	private static HikariDataSource hds=initHikariDataSource();
+	
+	
+	private static HikariDataSource initHikariDataSource() {
 		
 		var config = new HikariConfig();
 		config.setUsername("admin");
@@ -31,10 +33,15 @@ public class DsqlDataSourceConfig {
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
 		config.setMaximumPoolSize(1); // default is 10
-
-		hds = new HikariDataSource(config);
+        try {
+		 return new HikariDataSource(config);
+        } catch (Exception ex) {
+        	ex.printStackTrace();
+        	System.out.println("error message : "+ex.getMessage());
+        	System.out.println("error stack trace : "+ex.getStackTrace());
+        }
+		return null;
 	}
-	
 		
 	/**
 	 * creates jdbc connection backed by Hikari data source pool

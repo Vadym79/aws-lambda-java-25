@@ -1,41 +1,5 @@
 [
   {
-    "name": "com.zaxxer.hikari.pool.PoolEntry",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "com.zaxxer.hikari.util.ConcurrentBag",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "org.postgresql.jdbc.PgConnection",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "org.postgresql.Driver",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "org.postgresql.ssl.DefaultJavaSSLFactory",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
-    "name": "software.amazon.dsql.jdbc.DSQLConnector",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
-  },
-  {
     "name": "software.amazonaws.example.product.handler.GetProductByIdHandler",
     "allPublicConstructors": true,
     "allPublicMethods": true
