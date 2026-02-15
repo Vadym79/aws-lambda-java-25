@@ -27,8 +27,8 @@ public class DsqlDataSourceConfig {
 		
 		var config = new HikariConfig();
 		config.setUsername("admin");
+		System.out.println("JDCB-URL: "+JDBC_URL);
 		config.setJdbcUrl(JDBC_URL);
-		config.setInitializationFailTimeout(0);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
 		config.setMaximumPoolSize(1); // default is 10
 
