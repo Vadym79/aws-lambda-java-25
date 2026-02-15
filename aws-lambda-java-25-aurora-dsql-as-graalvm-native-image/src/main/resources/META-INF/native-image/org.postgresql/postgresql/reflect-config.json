@@ -1,0 +1,9 @@
+[
+  {
+    "name": "org.postgresql.Driver",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  }
+]
