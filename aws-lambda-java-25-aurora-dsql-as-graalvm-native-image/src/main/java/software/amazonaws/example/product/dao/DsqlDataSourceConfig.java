@@ -29,6 +29,7 @@ public class DsqlDataSourceConfig {
 		var config = new HikariConfig();
 		
 		config.setUsername("admin");
+		config.setDriverClassName("software.amazon.dsql.jdbc.DSQLConnector");
 		System.out.println("JDCB-URL: "+JDBC_URL);
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
@@ -42,7 +43,7 @@ public class DsqlDataSourceConfig {
     		hds.setJdbcUrl(JDBC_URL);
     		hds.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
     		hds.setMaximumPoolSize(1); // default is 10
-    		hds.setMinimumIdle(1);´
+    		
     		*/
         	HikariDataSource hds= new HikariDataSource(config);
     		System.out.println("url: "+hds.getJdbcUrl());
