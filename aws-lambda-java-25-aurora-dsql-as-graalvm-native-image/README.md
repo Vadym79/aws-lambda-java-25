@@ -9,11 +9,30 @@
 
 ```bash
 
-Clone git repository locally
-git clone https://github.com/Vadym79/aws-lambda-java-25.git
 
-## Switch to the aws-lambda-java-25-aurora-dsql directory  
+
+curl -s "https://get.sdkman.io" | bash
+source "/home/ec2-user/.sdkman/bin/sdkman-init.sh"
+
+#install graalvm 25 (use the latest version available) 
+
+sdk install java 25.0.2-graal  
+
+# install native image  
+sudo yum install gcc glibc-devel zlib-devel   
+sudo dnf install gcc glibc-devel zlib-devel libstdc++-static  
+sudo yum install maven
+
+## install git and maven (and optional Docker)
+
+## Clone git repository locally  
+git clone https://github.com/Vadym79/aws-lambda-java-25.git 
+
+## Switch to aws-lambda-java-25-aurora-dsql-as-graalvm-native-image directory   
+
 ## Compile and package the Java application with Maven from the root (where pom.xml is located) of the project
+
+Set JAVA_HOME variable, for example export JAVA_HOME=/home/ec2-user/.sdkman/candidates/java/25.0.2-graal/  
 
 mvn clean package
 
