@@ -26,7 +26,7 @@ public class DsqlDataSourceConfig {
 	
 	
 	private static HikariDataSource initHikariDataSource() {
-		
+		if(true) return null;
 		var config = new HikariConfig();
 		config.setUsername("admin");
 		System.out.println("JDCB-URL: "+JDBC_URL);
