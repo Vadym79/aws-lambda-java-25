@@ -13,9 +13,7 @@
   },
   {
     "name": "software.amazon.dsql.jdbc.DSQLConnector",
-    "allDeclaredFields": true,
-    "allPublicConstructors": true,
-    "allPublicMethods": true
+    "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
     "name": "software.amazonaws.example.product.handler.GetProductByIdHandler",
