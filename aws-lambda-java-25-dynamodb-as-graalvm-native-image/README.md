@@ -9,9 +9,7 @@
 
 ```bash
 
-Clone git repository locally
-git clone https://github.com/Vadym79/aws-lambda-java-25.git 
-change to aws-lambda-java-25-dynamodb-as-graalvm-native-image directory 
+
 
 curl -s "https://get.sdkman.io" | bash
 source "/home/ec2-user/.sdkman/bin/sdkman-init.sh"
@@ -27,15 +25,18 @@ sudo yum install maven
 
 ## install git and maven (and optional Docker)
 
-## Switch to the aws-lambda-java-25-aurora-dsql directory  
+## Clone git repository locally  
+git clone https://github.com/Vadym79/aws-lambda-java-25.git   
+## Switch to aws-lambda-java-25-dynamodb-as-graalvm-native-image directory   
+
 ## Compile and package the Java application with Maven from the root (where pom.xml is located) of the project
 
 Set JAVA_HOME variable, for example export JAVA_HOME=/home/ec2-user/.sdkman/candidates/java/25.0.2-graal/  
 
 mvn clean package
 
-Deploy your application with AWS SAM
-sam deploy -g --region us-east-1
+## Deploy your application with AWS SAM  
+sam deploy -g --region us-east-1 
 
 ```
 
