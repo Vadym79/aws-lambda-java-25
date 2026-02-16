@@ -2,4 +2,4 @@
 
 cd ${LAMBDA_TASK_ROOT:-.}
 
-./aws-lambda-java-25-with-aurora-dsql-as-graalvm-native-image 
+./aws-lambda-java-25-with-hibernate-and-aurora-dsql-as-graalvm-native-image

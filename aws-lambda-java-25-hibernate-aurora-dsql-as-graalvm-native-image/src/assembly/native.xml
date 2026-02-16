@@ -22,7 +22,7 @@
 			<useDefaultExcludes>true</useDefaultExcludes>
 			<fileMode>0775</fileMode>
 			<includes>
-				<include>aws-lambda-java-25-with-aurora-dsql-as-graalvm-native-image</include>
+				<include>aws-lambda-java-25-with-hibernate-and-aurora-dsql-as-graalvm-native-image</include>
 			</includes>
 		</fileSet>
 	</fileSets>

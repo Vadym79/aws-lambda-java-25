@@ -143,7 +143,7 @@
 	        <configuration>
 	          <skip>false</skip>
 	          <mainClass>com.formkiq.lambda.runtime.graalvm.LambdaRuntime</mainClass>
-	          <imageName>aws-lambda-java-25-with-aurora-dsql-as-graalvm-native-image</imageName>
+	          <imageName>aws-lambda-java-25-with-hibernate-and-aurora-dsql-as-graalvm-native-image</imageName>
 	          <buildArgs>
 	            --no-fallback
 	            --enable-http
