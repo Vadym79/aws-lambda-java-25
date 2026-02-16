@@ -27,8 +27,8 @@ import java.sql.Statement;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
-import static com.zaxxer.hikari.util.ClockSource.*;
-import static com.zaxxer.hikari.util.ClockSource.currentTime;
+import static software.amazonaws.example.product.dao.ClockSource.*;
+import static software.amazonaws.example.product.dao.ClockSource.currentTime;
 
 /**
  * Entry used in the ConcurrentBag to track Connection instances.
@@ -75,6 +75,7 @@ final class PoolEntry implements IConcurrentBagEntry
       this.isAutoCommit = isAutoCommit;
       System.out.println(" auto comm ");
       this.lastAccessed = currentTime();
+      System.out.println(" time ");
       this.openStatements = new FastList<>(Statement.class, 16);
       System.out.println("finished init pool entry ");
    }
