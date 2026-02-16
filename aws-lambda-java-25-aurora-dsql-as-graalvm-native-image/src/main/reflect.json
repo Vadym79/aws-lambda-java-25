@@ -16,7 +16,7 @@
     "allPublicMethods" : true,
     "allDeclaredClasses" : true,
     "allPublicClasses" : true
-  }
+  },
   {
     "name": "software.amazonaws.example.product.handler.GetProductByIdHandler",
     "allPublicConstructors": true,
