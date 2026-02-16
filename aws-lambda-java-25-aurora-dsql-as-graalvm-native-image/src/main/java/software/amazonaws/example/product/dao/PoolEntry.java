@@ -15,9 +15,9 @@ package software.amazonaws.example.product.dao;
  * limitations under the License.
  */
 
-import com.zaxxer.hikari.pool.ProxyConnection;
+
 import com.zaxxer.hikari.util.ConcurrentBag.IConcurrentBagEntry;
-import com.zaxxer.hikari.util.FastList;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -105,10 +105,7 @@ final class PoolEntry implements IConcurrentBagEntry
       this.keepalive = keepalive;
    }
 
-   Connection createProxyConnection(final ProxyLeakTask leakTask)
-   {
-      return ProxyFactory.getProxyConnection(this, connection, openStatements, leakTask, isReadOnly, isAutoCommit);
-   }
+
 
    void resetConnectionState(final ProxyConnection proxyConnection, final int dirtyBits) throws SQLException
    {

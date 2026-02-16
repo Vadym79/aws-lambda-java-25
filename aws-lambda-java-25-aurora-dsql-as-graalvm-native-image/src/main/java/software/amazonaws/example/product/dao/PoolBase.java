@@ -17,7 +17,7 @@ package software.amazonaws.example.product.dao;
 */
 
 
-import com.zaxxer.hikari.pool.ProxyConnection;
+
 import com.zaxxer.hikari.HikariCredentialsProvider;
 import com.zaxxer.hikari.SQLExceptionOverride;
 import com.zaxxer.hikari.metrics.IMetricsTracker;

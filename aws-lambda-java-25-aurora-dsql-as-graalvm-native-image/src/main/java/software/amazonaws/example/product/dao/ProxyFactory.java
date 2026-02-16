@@ -19,10 +19,9 @@ package software.amazonaws.example.product.dao;
 
 import java.sql.*;
 
-import com.zaxxer.hikari.pool.ProxyConnection;
 import com.zaxxer.hikari.pool.ProxyStatement;
 
-import com.zaxxer.hikari.util.FastList;
+
 
 /**
  * A factory class that produces proxies around instances of the standard

@@ -17,7 +17,7 @@ package software.amazonaws.example.product.dao;
  */
 
 
-import com.zaxxer.hikari.pool.ProxyConnection;
+
 
 import com.zaxxer.hikari.HikariPoolMXBean;
 import com.zaxxer.hikari.metrics.MetricsTrackerFactory;
