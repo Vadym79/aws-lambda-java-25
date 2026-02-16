@@ -65,7 +65,9 @@ public final class FastList<T> implements List<T>, RandomAccess, Serializable
    @SuppressWarnings("unchecked")
    public FastList(Class<?> clazz, int capacity)
    {
+	   System.out.println("clazz "+clazz);
       this.elementData = (T[]) Array.newInstance(clazz, capacity);
+      System.out.println("elem "+this.elementData);
       this.clazz = clazz;
    }
 
