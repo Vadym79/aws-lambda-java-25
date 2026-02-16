@@ -3,11 +3,10 @@ package software.amazonaws.example.product.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-//import java.time.Duration;
 import java.util.Properties;
 
-//import com.zaxxer.hikari.HikariConfig;
-//import com.zaxxer.hikari.HikariDataSource;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 
 public class DsqlDataSourceConfig {
@@ -22,15 +21,13 @@ public class DsqlDataSourceConfig {
 			+ "&token-duration-secs=900";
 
 	
-	private static com.zaxxer.hikari.HikariDataSource hds=initHikariDataSource();
+	private static HikariDataSource hds=initHikariDataSource();
 	
 	
-	private static com.zaxxer.hikari.HikariDataSource initHikariDataSource() {
+	private static HikariDataSource initHikariDataSource() {
 		var config = new HikariConfig();
 		
 		config.setUsername("admin");
-		//config.setDriverClassName("software.amazon.dsql.jdbc.DSQLConnector");
-		System.out.println("JDCB-URL: "+JDBC_URL);
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
 		config.setMaximumPoolSize(1); // default is 10
@@ -38,21 +35,14 @@ public class DsqlDataSourceConfig {
         	
         	//HikariDataSource hds= new HikariDataSource(config);
         	
-        	com.zaxxer.hikari.HikariDataSource hds= new com.zaxxer.hikari.HikariDataSource();
+        	HikariDataSource hds= new HikariDataSource();
         	
         	
         	hds.setUsername("admin");
-    		
     		hds.setJdbcUrl(JDBC_URL);
     		hds.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
     		hds.setMaximumPoolSize(1); // default is 10
-    		
-    		
-        	
-    		System.out.println("url: "+hds.getJdbcUrl());
-    		System.out.println("ds: "+hds.getDataSource());
-    		System.out.println("ds class name: "+hds.getDataSourceClassName());
-        	
+    		        	
     		return hds;
 		    
         } catch (Exception ex) {
@@ -80,14 +70,11 @@ public class DsqlDataSourceConfig {
 	 * @throws SQLException
 	 */
 	public static Connection getJDBCConnection() throws SQLException {
-		long startTime = System.currentTimeMillis();
 		if (jdbConnection == null || jdbConnection.isClosed()) {
 			var props = new Properties();
 			props.setProperty("user", "admin");
 			jdbConnection = DriverManager.getConnection(JDBC_URL, props);
 		}
-		var endTime=System.currentTimeMillis();
-		System.out.println("time to create jdbc connection in ms "+(endTime-startTime)); 
 		return jdbConnection;
 	}
 
