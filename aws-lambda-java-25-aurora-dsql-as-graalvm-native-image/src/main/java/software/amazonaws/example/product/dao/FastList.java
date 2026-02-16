@@ -66,6 +66,7 @@ public final class FastList<T> implements List<T>, RandomAccess, Serializable
    public FastList(Class<?> clazz, int capacity)
    {
 	   System.out.println("clazz "+clazz);
+	   System.out.println("instance "+Array.newInstance(clazz, capacity));
       this.elementData = (T[]) Array.newInstance(clazz, capacity);
       System.out.println("elem "+this.elementData);
       this.clazz = clazz;
