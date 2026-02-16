@@ -4,7 +4,7 @@
 ## Architecture
 
 <p align="center">
-  <img src="/src/main/resources/img/app_arch.png" alt="Application Architecture"/>
+  <img src="/aws-lambda-java-25-dynamodb/src/main/resources/img/app_arch.png" alt="Application Architecture"/>
 </p>
 
 ## Installation and deployment
