@@ -75,7 +75,8 @@ final class PoolEntry implements IConcurrentBagEntry
       this.isAutoCommit = isAutoCommit;
       System.out.println(" auto comm ");
       this.lastAccessed = currentTime();
-      System.out.println(" time "+lastAccessed);
+      System.out.println(" timess ");
+      System.out.println(" timesss "+lastAccessed);
       System.out.println(" statement class "+Statement.class);
       this.openStatements = new FastList<>(Statement.class, 16);
       System.out.println(" open stat "+openStatements);
