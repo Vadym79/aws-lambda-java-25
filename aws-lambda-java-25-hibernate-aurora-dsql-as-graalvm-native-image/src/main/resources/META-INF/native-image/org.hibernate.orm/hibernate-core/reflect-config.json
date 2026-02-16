@@ -1,0 +1,16 @@
+[
+  {
+    "name": "org.hibernate.boot.model.naming.ImplicitNamingStrategyJpaCompliantImpl",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  }, 
+  {
+    "name": "org.hibernate.boot.model.relational.ColumnOrderingStrategyStandard",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  } 
+]
