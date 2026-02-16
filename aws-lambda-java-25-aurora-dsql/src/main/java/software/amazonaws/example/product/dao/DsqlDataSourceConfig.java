@@ -53,14 +53,11 @@ public class DsqlDataSourceConfig {
 	 * @throws SQLException
 	 */
 	public static Connection getJDBCConnection() throws SQLException {
-		long startTime = System.currentTimeMillis();
 		if (jdbConnection == null || jdbConnection.isClosed()) {
 			var props = new Properties();
 			props.setProperty("user", "admin");
 			jdbConnection = DriverManager.getConnection(JDBC_URL, props);
 		}
-		var endTime=System.currentTimeMillis();
-		System.out.println("time to create jdbc connection in ms "+(endTime-startTime)); 
 		return jdbConnection;
 	}
 

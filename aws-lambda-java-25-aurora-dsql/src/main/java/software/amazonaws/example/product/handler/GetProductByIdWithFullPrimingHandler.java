@@ -7,6 +7,9 @@ package software.amazonaws.example.product.handler;
 import org.crac.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+
 import org.crac.Core;
 
 
@@ -14,6 +17,7 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.serialization.events.LambdaEventSerializers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import software.amazon.awssdk.http.HttpStatusCode;
@@ -34,7 +38,10 @@ public class GetProductByIdWithFullPrimingHandler
 	@Override
 	public void beforeCheckpoint(org.crac.Context<? extends Resource> context) throws Exception {
 		logger.info("before applying a custom priming");
-		productDao.getProductById(0);
+		APIGatewayProxyRequestEvent requestEvent = LambdaEventSerializers.serializerFor(APIGatewayProxyRequestEvent.class, ClassLoader.getSystemClassLoader())
+				.fromJson(getAPIGatewayProxyRequestEventAsJson());
+		logger.info("req event: "+requestEvent);	
+		this.handleRequest(requestEvent, new MockLambdaContext());
 		logger.info("after applying a custom priming");
     }
 
@@ -44,6 +51,14 @@ public class GetProductByIdWithFullPrimingHandler
 	
 	}
 
+   private static String getAPIGatewayProxyRequestEventAsJson() throws Exception{
+    	final APIGatewayProxyRequestEvent proxyRequestEvent = new APIGatewayProxyRequestEvent ();
+    	proxyRequestEvent.setHttpMethod("GET");
+    	proxyRequestEvent.setPathParameters(Map.of("id","0"));
+    	return objectMapper.writeValueAsString(proxyRequestEvent);		
+    }
+
+	
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
 		var id = requestEvent.getPathParameters().get("id");
