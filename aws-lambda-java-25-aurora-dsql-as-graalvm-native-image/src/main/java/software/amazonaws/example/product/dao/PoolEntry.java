@@ -105,7 +105,10 @@ final class PoolEntry implements IConcurrentBagEntry
       this.keepalive = keepalive;
    }
 
-
+   Connection createProxyConnection(final ProxyLeakTask leakTask) 
+   {
+      return (Connection)ProxyFactory.getProxyConnection(this, connection, openStatements, leakTask, isReadOnly, isAutoCommit);
+   }
 
    void resetConnectionState(final ProxyConnection proxyConnection, final int dirtyBits) throws SQLException
    {
