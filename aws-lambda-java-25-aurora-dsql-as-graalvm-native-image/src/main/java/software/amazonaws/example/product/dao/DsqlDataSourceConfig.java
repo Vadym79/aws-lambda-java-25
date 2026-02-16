@@ -22,10 +22,10 @@ public class DsqlDataSourceConfig {
 			+ "&token-duration-secs=900";
 
 	
-	private static HikariDataSource hds=initHikariDataSource();
+	private static com.zaxxer.hikari.HikariDataSource hds=initHikariDataSource();
 	
 	
-	private static HikariDataSource initHikariDataSource() {
+	private static com.zaxxer.hikari.HikariDataSource initHikariDataSource() {
 		var config = new HikariConfig();
 		
 		config.setUsername("admin");
@@ -38,7 +38,7 @@ public class DsqlDataSourceConfig {
         	
         	//HikariDataSource hds= new HikariDataSource(config);
         	
-        	HikariDataSource hds= new HikariDataSource();
+        	com.zaxxer.hikari.HikariDataSource hds= new com.zaxxer.hikari.HikariDataSource();
         	
         	
         	hds.setUsername("admin");
