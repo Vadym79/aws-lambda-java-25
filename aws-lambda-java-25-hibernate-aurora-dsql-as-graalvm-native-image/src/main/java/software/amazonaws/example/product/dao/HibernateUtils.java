@@ -5,6 +5,7 @@ import java.util.Properties;
 import software.amazonaws.example.product.entity.Product;
 
 import org.hibernate.SessionFactory;
+import org.hibernate.annotations.SQLInsert;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.cfg.Environment;
 
@@ -46,6 +47,7 @@ public final class HibernateUtils {
 	 * @return hibernate session factory
 	 */
 	public static SessionFactory getSessionFactory() {
+		DialectOverridesAnnotationHelper.getOverrideAnnotation(SQLInsert.class);
 		return sessionFactory;
 	}
 	
