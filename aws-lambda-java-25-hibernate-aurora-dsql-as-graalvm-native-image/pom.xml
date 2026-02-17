@@ -34,12 +34,6 @@
 	        <groupId>org.hibernate.orm</groupId>
 	        <artifactId>hibernate-core</artifactId>
 	        <version>${hibernate.version}</version> 
-	      	<exclusions>
-				<exclusion>
-                   <groupId>net.bytebuddy</groupId>
-                   <artifactId>byte-buddy</artifactId>				
-                </exclusion>
-			</exclusions>
 	    </dependency>
 	 
 	    <!-- Option A: Official Integration Module (Recommended for XML config) -->
@@ -48,7 +42,11 @@
 	        <artifactId>hibernate-hikaricp</artifactId>
 	        <version>${hibernate.version}</version>
 	    </dependency>
-
+	    <dependency>
+	        <groupId>org.hibernate.orm</groupId>
+	        <artifactId>hibernate-graalvm</artifactId>
+	        <version>${hibernate.version}</version>
+	    </dependency>
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>

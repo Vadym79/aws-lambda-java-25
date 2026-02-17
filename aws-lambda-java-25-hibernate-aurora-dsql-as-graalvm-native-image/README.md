@@ -1,5 +1,7 @@
 # Example of Lambda with Custom Runtime based on GraalVM Native Image with Java 25 using using Hibernate as an ORM framework and Amazon Aurora DSQL database  
 
+## !!!IMPORTANT!!!
+Currently it doesn't work, I'm in the process of finding out whether I can fix without using a framework like Spring Boot, Quarkus or Micronaut.  
 
 ## Architecture
 
