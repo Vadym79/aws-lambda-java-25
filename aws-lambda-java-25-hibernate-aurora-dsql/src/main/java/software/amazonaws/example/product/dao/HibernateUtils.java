@@ -30,6 +30,8 @@ public final class HibernateUtils {
 		settings.put("jakarta.persistence.jdbc.user", "admin");
 		settings.put("jakarta.persistence.jdbc.url", JDBC_URL);
 		settings.put("hibernate.connection.pool_size", 1);
+		settings.put("hibernate.hikari.maxLifetime", 1500 * 1000);
+		
 		settings.put(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
 
 		return new Configuration()
