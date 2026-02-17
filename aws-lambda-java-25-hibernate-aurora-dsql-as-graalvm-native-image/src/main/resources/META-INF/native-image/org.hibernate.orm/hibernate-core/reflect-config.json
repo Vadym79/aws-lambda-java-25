@@ -7,17 +7,6 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   }, 
   {
-    "name": "org.hibernate.boot.model.internal.DialectOverridesAnnotationHelper",
-    "allDeclaredConstructors" : true,
-    "allPublicConstructors" : true,
-    "allDeclaredMethods" : true,
-    "allDeclaredFields": true,
-    "allPublicMethods" : true,
-    "allDeclaredClasses" : true,
-    "allPublicClasses" : true,
-    "methods":[{"name":"<init>","parameterTypes":[] }]
-  }, 
-  {
     "name": "org.hibernate.annotations.DialectOverride",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
@@ -26,8 +15,33 @@
     "allPublicMethods" : true,
     "allDeclaredClasses" : true,
     "allPublicClasses" : true,
+    "allNestMembers" : true,
     "methods":[{"name":"<init>","parameterTypes":[] }]
-  }, 
+  },
+  {
+    "name": "java.lang.Runtime$Version",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allDeclaredFields": true,
+    "allPublicMethods" : true,
+    "allDeclaredClasses" : true,
+    "allPublicClasses" : true,
+    "allNestMembers" : true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name": "org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl",
+    "allDeclaredConstructors" : true,
+    "allPublicConstructors" : true,
+    "allDeclaredMethods" : true,
+    "allDeclaredFields": true,
+    "allPublicMethods" : true,
+    "allDeclaredClasses" : true,
+    "allPublicClasses" : true,
+    "allNestMembers" : true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
   {
     "name": "org.hibernate.boot.models.annotations.internal.CacheAnnotation",
     "allDeclaredFields":true,

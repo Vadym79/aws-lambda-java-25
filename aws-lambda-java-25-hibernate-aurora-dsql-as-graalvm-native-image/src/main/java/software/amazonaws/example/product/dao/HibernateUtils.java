@@ -11,6 +11,8 @@ import org.hibernate.cfg.Environment;
 
 
 public final class HibernateUtils {
+	
+
 		 
 	private static final String AURORA_DSQL_CLUSTER_ENDPOINT = System.getenv("AURORA_DSQL_CLUSTER_ENDPOINT");
 			
@@ -32,6 +34,7 @@ public final class HibernateUtils {
 		settings.put("jakarta.persistence.jdbc.url", JDBC_URL);
 		settings.put("hibernate.connection.pool_size", 1);
 		settings.put(Environment.CONNECTION_PROVIDER, "org.hibernate.hikaricp.internal.HikariCPConnectionProvider");
+		settings.put(Environment.BYTECODE_PROVIDER,"none");
 		settings.put("hibernate.hikari.maxLifetime", 1500 * 1000);
 
 		return new Configuration()
@@ -47,7 +50,6 @@ public final class HibernateUtils {
 	 * @return hibernate session factory
 	 */
 	public static SessionFactory getSessionFactory() {
-		DialectOverridesAnnotationHelper.getOverrideAnnotation(SQLInsert.class);
 		return sessionFactory;
 	}
 	

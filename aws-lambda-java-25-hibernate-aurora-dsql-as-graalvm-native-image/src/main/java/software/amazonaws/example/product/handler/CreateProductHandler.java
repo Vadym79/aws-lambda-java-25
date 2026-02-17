@@ -3,6 +3,8 @@
 
 package software.amazonaws.example.product.handler;
 
+import org.hibernate.annotations.SQLInsert;
+
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
