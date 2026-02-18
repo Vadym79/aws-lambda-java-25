@@ -23,9 +23,9 @@ public class CreateProductHandler implements RequestHandler<APIGatewayProxyReque
 		try {
 			var requestBody = requestEvent.getBody();
 			var product = objectMapper.readValue(requestBody, Product.class);
-	        productDao.createProduct(product);
+	        int id =productDao.createProduct(product);
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.CREATED)
-					.withBody("Product with id = " + product.getId() + " created");
+					.withBody("Product with id = " + id + " created");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.INTERNAL_SERVER_ERROR)
