@@ -1,5 +1,3 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-// SPDX-License-Identifier: MIT-0
 
 package software.amazonaws.example.product.handler;
 
@@ -12,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazonaws.example.product.dao.ProductDao;
 import software.amazonaws.example.product.entity.Product;
-
+import java.util.stream.StreamSupport;
 import java.util.ServiceLoader;
 
 public class CreateProductHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
@@ -26,7 +24,8 @@ public class CreateProductHandler implements RequestHandler<APIGatewayProxyReque
 			
 			ServiceLoader<org.hibernate.bytecode.spi.BytecodeProvider> loader =
 			    ServiceLoader.load(org.hibernate.bytecode.spi.BytecodeProvider.class);
-			
+		
+			context.getLogger().log("SIZE: " + StreamSupport.stream(loader.spliterator(), false).count());
 			for (org.hibernate.bytecode.spi.BytecodeProvider impl : loader) {
 			    context.getLogger().log("impl found: "+impl.getClass());
 			}
