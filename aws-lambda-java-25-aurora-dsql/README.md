@@ -31,7 +31,8 @@ sam deploy -g --region us-east-1
  
 2) Execute these sql statements to create table and sequences     
 
-CREATE TABLE products (id int PRIMARY KEY,  name varchar (256) NOT NULL, price int NOT NULL);   
+CREATE TABLE products (id int PRIMARY KEY,  name varchar (256) NOT NULL, price int NOT NULL);  
+CREATE SEQUENCE product_id CACHE 1;   
 
 3) Populate some data  
 
@@ -48,3 +49,10 @@ Use this Http Body as Json to create a sample order with 2 items :
  { "id": 2, "name": "A5 Book", "price": 5000 }  
 
 
+or if you don't pass the id like   
+
+ { "name": "Print 10x13", "price": 15 }  
+ and  
+ { "name": "A5 Book", "price": 5000 }
+ 
+ sequence will be used to generate one 
