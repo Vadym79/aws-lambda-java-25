@@ -1,0 +1,293 @@
+package software.amazonaws.example.product.handler;
+
+/*
+ * SPDX-License-Identifier: Apache-2.0
+ * Copyright Red Hat Inc. and Hibernate Authors
+ */
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import org.hibernate.boot.registry.BootstrapServiceRegistry;
+import org.hibernate.boot.registry.classloading.internal.ClassLoaderServiceImpl;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
+import org.hibernate.boot.registry.selector.internal.StrategySelectorImpl;
+import org.hibernate.boot.registry.selector.spi.StrategySelector;
+import org.hibernate.integrator.internal.IntegratorServiceImpl;
+import org.hibernate.integrator.spi.Integrator;
+import org.hibernate.integrator.spi.IntegratorService;
+import org.hibernate.service.Service;
+import org.hibernate.service.ServiceRegistry;
+import org.hibernate.service.internal.AbstractServiceRegistryImpl;
+import org.hibernate.service.spi.ServiceBinding;
+import org.hibernate.service.spi.ServiceException;
+import org.hibernate.service.spi.ServiceInitiator;
+import org.hibernate.service.spi.ServiceRegistryImplementor;
+import org.hibernate.service.spi.Stoppable;
+
+
+/**
+ * {@link ServiceRegistry} implementation containing specialized "bootstrap" services, specifically:<ul>
+ *     <li>{@link ClassLoaderService}</li>
+ *     <li>{@link IntegratorService}</li>
+ *     <li>{@link StrategySelector}</li>
+ * </ul>
+ *
+ * @author Steve Ebersole
+ */
+public class BootstrapServiceRegistryImpl
+		implements ServiceRegistryImplementor, BootstrapServiceRegistry, ServiceBinding.ServiceLifecycleOwner {
+
+	private final boolean autoCloseRegistry;
+	private boolean active = true;
+
+	private static final LinkedHashSet<Integrator> NO_INTEGRATORS = new LinkedHashSet<>();
+
+	private final ServiceBinding<ClassLoaderService> classLoaderServiceBinding;
+	private final ServiceBinding<StrategySelector> strategySelectorBinding;
+	private final ServiceBinding<IntegratorService> integratorServiceBinding;
+
+	private Set<ServiceRegistryImplementor> childRegistries;
+
+	/**
+	 * Constructs a BootstrapServiceRegistryImpl.
+	 *
+	 * Do not use directly generally speaking.  Use {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder}
+	 * instead.
+	 *
+	 * @see org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
+	 */
+	public BootstrapServiceRegistryImpl() {
+		this( new ClassLoaderServiceImpl(), NO_INTEGRATORS );
+	}
+	/**
+	 * Constructs a BootstrapServiceRegistryImpl.
+	 *
+	 * Do not use directly generally speaking.  Use {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder}
+	 * instead.
+	 *
+	 * @param classLoaderService The ClassLoaderService to use
+	 * @param providedIntegrators The group of explicitly provided integrators
+	 *
+	 * @see org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
+	 */
+	public BootstrapServiceRegistryImpl(
+			ClassLoaderService classLoaderService,
+			LinkedHashSet<Integrator> providedIntegrators) {
+		this( true, classLoaderService, providedIntegrators );
+	}
+
+	/**
+	 * Constructs a BootstrapServiceRegistryImpl.
+	 *
+	 * Do not use directly generally speaking.  Use {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder}
+	 * instead.
+	 *
+	 * @param autoCloseRegistry See discussion on
+	 * {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder#disableAutoClose}
+	 * @param classLoaderService The ClassLoaderService to use
+	 * @param providedIntegrators The group of explicitly provided integrators
+	 *
+	 * @see org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
+	 */
+	public BootstrapServiceRegistryImpl(
+			boolean autoCloseRegistry,
+			ClassLoaderService classLoaderService,
+			LinkedHashSet<Integrator> providedIntegrators) {
+		this.autoCloseRegistry = autoCloseRegistry;
+
+		this.classLoaderServiceBinding = new ServiceBinding<>(
+				this,
+				ClassLoaderService.class,
+				classLoaderService
+		);
+
+		this.strategySelectorBinding = new ServiceBinding<>(
+				this,
+				StrategySelector.class,
+				new StrategySelectorImpl( classLoaderService )
+		);
+
+		this.integratorServiceBinding = new ServiceBinding<>(
+				this,
+				IntegratorService.class,
+				new IntegratorServiceImpl( providedIntegrators, classLoaderService )
+		);
+	}
+
+
+	/**
+	 * Constructs a BootstrapServiceRegistryImpl.
+	 *
+	 * Do not use directly generally speaking.  Use {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder}
+	 * instead.
+	 *
+	 * @param classLoaderService The ClassLoaderService to use
+	 * @param strategySelector The StrategySelector to use
+	 * @param integratorService The IntegratorService to use
+	 *
+	 * @see org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
+	 */
+	public BootstrapServiceRegistryImpl(
+			ClassLoaderService classLoaderService,
+			StrategySelector strategySelector,
+			IntegratorService integratorService) {
+		this( true, classLoaderService, strategySelector, integratorService );
+	}
+
+
+	/**
+	 * Constructs a BootstrapServiceRegistryImpl.
+	 *
+	 * Do not use directly generally speaking.  Use {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder}
+	 * instead.
+	 *
+	 * @param autoCloseRegistry See discussion on
+	 * {@link org.hibernate.boot.registry.BootstrapServiceRegistryBuilder#disableAutoClose}
+	 * @param classLoaderService The ClassLoaderService to use
+	 * @param strategySelector The StrategySelector to use
+	 * @param integratorService The IntegratorService to use
+	 *
+	 * @see org.hibernate.boot.registry.BootstrapServiceRegistryBuilder
+	 */
+	public BootstrapServiceRegistryImpl(
+			boolean autoCloseRegistry,
+			ClassLoaderService classLoaderService,
+			StrategySelector strategySelector,
+			IntegratorService integratorService) {
+		this.autoCloseRegistry = autoCloseRegistry;
+
+		this.classLoaderServiceBinding = new ServiceBinding<>(
+				this,
+				ClassLoaderService.class,
+				classLoaderService
+		);
+
+		this.strategySelectorBinding = new ServiceBinding<>(
+				this,
+				StrategySelector.class,
+				strategySelector
+		);
+
+		this.integratorServiceBinding = new ServiceBinding<>(
+				this,
+				IntegratorService.class,
+				integratorService
+		);
+	}
+
+
+
+	@Override
+	public <R extends Service> R getService(Class<R> serviceRole) {
+		final var binding = locateServiceBinding( serviceRole );
+		return binding == null ? null : binding.getService();
+	}
+
+	@Override
+	@SuppressWarnings( {"unchecked"})
+	public <R extends Service> ServiceBinding<R> locateServiceBinding(Class<R> serviceRole) {
+		if ( ClassLoaderService.class.equals( serviceRole ) ) {
+			return (ServiceBinding<R>) classLoaderServiceBinding;
+		}
+		else if ( StrategySelector.class.equals( serviceRole) ) {
+			return (ServiceBinding<R>) strategySelectorBinding;
+		}
+		else if ( IntegratorService.class.equals( serviceRole ) ) {
+			return (ServiceBinding<R>) integratorServiceBinding;
+		}
+
+		return null;
+	}
+
+	@Override
+	public synchronized void destroy() {
+		if ( active ) {
+			active = false;
+			destroy( classLoaderServiceBinding );
+			destroy( strategySelectorBinding );
+			destroy( integratorServiceBinding );
+			if ( childRegistries != null ) {
+				for ( var serviceRegistry : childRegistries ) {
+					serviceRegistry.destroy();
+				}
+			}
+		}
+	}
+
+	private synchronized void destroy(ServiceBinding<?> serviceBinding) {
+		serviceBinding.getLifecycleOwner().stopService( serviceBinding );
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	@Override
+	public ServiceRegistry getParentServiceRegistry() {
+		return null;
+	}
+
+	@Override
+	public <R extends Service> R initiateService(ServiceInitiator<R> serviceInitiator) {
+		throw new ServiceException( "Bootstrap registry should only contain provided services" );
+	}
+
+	@Override
+	public <R extends Service> void configureService(ServiceBinding<R> binding) {
+		throw new ServiceException( "Bootstrap registry should only contain provided services" );
+	}
+
+	@Override
+	public <R extends Service> void injectDependencies(ServiceBinding<R> binding) {
+		throw new ServiceException( "Bootstrap registry should only contain provided services" );
+	}
+
+	@Override
+	public <R extends Service> void startService(ServiceBinding<R> binding) {
+		throw new ServiceException( "Bootstrap registry should only contain provided services" );
+	}
+
+	@Override
+	public synchronized <R extends Service> void stopService(ServiceBinding<R> binding) {
+		final Service service = binding.getService();
+		if ( service instanceof Stoppable stoppable ) {
+			try {
+				stoppable.stop();
+			}
+			catch ( Exception e ) {
+			}
+		}
+	}
+
+	@Override
+	public synchronized void registerChild(ServiceRegistryImplementor child) {
+		if ( childRegistries == null ) {
+			childRegistries = new HashSet<>();
+		}
+		if ( !childRegistries.add( child ) ) {
+			
+		}
+	}
+
+	@Override
+	public synchronized void deRegisterChild(ServiceRegistryImplementor child) {
+		if ( childRegistries == null ) {
+			throw new IllegalStateException( "No child ServiceRegistry registrations found" );
+		}
+		childRegistries.remove( child );
+		if ( childRegistries.isEmpty() ) {
+			if ( autoCloseRegistry ) {
+				destroy();
+			}
+			else {
+			}
+		}
+	}
+
+	@Override
+	public <T extends Service> T fromRegistryOrChildren(Class<T> serviceRole) {
+		return AbstractServiceRegistryImpl.fromRegistryOrChildren( serviceRole, this, childRegistries );
+	}
+}
