@@ -10,31 +10,20 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazonaws.example.product.dao.ProductDao;
 import software.amazonaws.example.product.entity.Product;
-import java.util.stream.StreamSupport;
-import java.util.ServiceLoader;
+
 
 public class CreateProductHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	//private static final ProductDao productDao= new ProductDao();
+	private static final ProductDao productDao= new ProductDao();
 
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
 		try {
 			
-			ServiceLoader<org.hibernate.bytecode.spi.BytecodeProvider> loader =
-			    ServiceLoader.load(org.hibernate.bytecode.spi.BytecodeProvider.class);
-		
-			context.getLogger().log("SIZE: " + StreamSupport.stream(loader.spliterator(), false).count());
-			for (org.hibernate.bytecode.spi.BytecodeProvider impl : loader) {
-			    context.getLogger().log("impl found: "+impl.getClass());
-			}
-
-
 			var requestBody = requestEvent.getBody();
 			var product = objectMapper.readValue(requestBody, Product.class);
-	        //int id =productDao.createProduct(product);
-			int id=0;
+	        int id =productDao.createProduct(product);
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.CREATED)
 					.withBody("Product with id = " + id + " created");
 		} catch (Exception e) {
