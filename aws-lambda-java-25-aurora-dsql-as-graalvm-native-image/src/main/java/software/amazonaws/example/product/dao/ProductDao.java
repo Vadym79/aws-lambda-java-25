@@ -2,7 +2,6 @@ package software.amazonaws.example.product.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
@@ -10,7 +9,10 @@ import java.util.Optional;
 import software.amazonaws.example.product.entity.Product;
 
 public class ProductDao {
-			
+		
+	@SuppressWarnings("unused")
+	private static final DsqlDataSourceConfig dsqlDataSourceConfig=new DsqlDataSourceConfig();
+	
 	/**
 	 * create a product and return its id
 	 * 
@@ -18,15 +20,26 @@ public class ProductDao {
 	 * @return product id
 	 */
 	public int createProduct(Product product) throws Exception {
-		try (Connection con = getConnection()) {
-			try (PreparedStatement pst = this.createProductPreparedStatement(con, product)) {
-				pst.executeUpdate();
+		 Product productToCreate=product;
+		 try (Connection con = getConnection()) {
+			if(product.id()==0) {
+				try (var pst1 = this.generateProductId(con);
+				     var rs = pst1.executeQuery()) {
+				if (rs.next()) {
+					var id = rs.getInt("nextval");
+					productToCreate=new Product(id, product.name(), product.price());
+			     }
+		       }
+			}
+			
+			try (var pst2 = this.createProductPreparedStatement(con, productToCreate)) {
+				pst2.executeUpdate();
 			} catch (SQLException ex) {
 				con.rollback();
 				throw ex;
 			}
 		}
-      return product.id();
+      return productToCreate.id();
 	}
 	
 
@@ -39,9 +52,9 @@ public class ProductDao {
 	 * @throws Exception
 	 */
 	public Optional<Product> getProductById(int id) throws Exception {
-		try (Connection con = getConnection();
-				PreparedStatement pst = this.getProductByIdPreparedStatement(con, id);
-				ResultSet rs = pst.executeQuery()) {
+		try (var con = getConnection();
+				var pst = this.getProductByIdPreparedStatement(con, id);
+				var rs = pst.executeQuery()) {
 			if (rs.next()) {
 				var name = rs.getString("name");
 				int price = rs.getInt("price");
@@ -64,15 +77,19 @@ public class ProductDao {
 	}
 
 
+	private PreparedStatement generateProductId(Connection con) throws SQLException {
+		PreparedStatement pst = con.prepareStatement("SELECT nextval('product_id')");
+		return pst;
+	}
+	
 	private PreparedStatement getProductByIdPreparedStatement(Connection con, int id) throws SQLException {
 		PreparedStatement pst = con.prepareStatement("SELECT * FROM products WHERE id = ?");
 		pst.setInt(1, id);
 		return pst;
 	}
 	
-	
 	private static final Connection getConnection() throws SQLException {
 		 return DsqlDataSourceConfig.getPooledConnection();
-		 //return DsqlDataSourceConfig.getJDBCConnection();
+		//return DsqlDataSourceConfig.getJDBCConnection();
 	}
 }
