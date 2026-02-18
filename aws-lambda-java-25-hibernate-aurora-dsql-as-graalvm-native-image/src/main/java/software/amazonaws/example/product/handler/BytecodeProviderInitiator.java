@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.ServiceLoader;
 
 import org.hibernate.Internal;
-import org.hibernate.boot.registry.StandardServiceInitiator;
 import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.hibernate.bytecode.spi.BytecodeProvider;
 import org.hibernate.service.spi.ServiceRegistryImplementor;

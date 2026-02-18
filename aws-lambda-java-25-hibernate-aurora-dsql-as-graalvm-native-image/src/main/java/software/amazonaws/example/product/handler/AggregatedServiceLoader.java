@@ -79,9 +79,11 @@ abstract class AggregatedServiceLoader<S> {
 				Class<S> serviceContract) {
 			this.serviceContract = serviceContract;
 			this.delegates = new ArrayList<>();
+			System.out.println("load contract "+serviceContract);
 			this.aggregatedClassLoaderServiceLoader = ServiceLoader.load( serviceContract, aggregatedClassLoader );
 			final Iterator<ClassLoader> clIterator = aggregatedClassLoader.newClassLoaderIterator();
 			while ( clIterator.hasNext() ) {
+				System.out.println("jey, load contract "+serviceContract);
 				this.delegates.add(
 						ServiceLoader.load( serviceContract, clIterator.next() )
 				);
@@ -115,8 +117,10 @@ abstract class AggregatedServiceLoader<S> {
 
 			// Always try the aggregated class loader first
 			var providerIterator = aggregatedClassLoaderServiceLoader.stream().iterator();
+			System.out.println("load all ");
 			while ( providerIterator.hasNext() ) {
 				ServiceLoader.Provider<S> provider = providerIterator.next();
+				System.out.println("load all provider :"+provider);
 				collectServiceIfNotDuplicate( result, alreadyEncountered, provider );
 			}
 

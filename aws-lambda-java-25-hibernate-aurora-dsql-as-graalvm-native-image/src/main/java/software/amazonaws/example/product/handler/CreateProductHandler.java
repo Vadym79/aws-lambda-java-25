@@ -23,9 +23,9 @@ public class CreateProductHandler implements RequestHandler<APIGatewayProxyReque
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
 		try {
-			var obj=StandardServiceRegistryImpl.create(new BootstrapServiceRegistryImpl()
-					, List.of(new BytecodeProviderInitiator()), 
-					List.of(), Map.of());
+			StandardServiceRegistryImpl  obj=StandardServiceRegistryImpl.create
+					(new BootstrapServiceRegistryImpl() , List.of(new BytecodeProviderInitiator()), 
+							List.of(), Map.of());
 			
 			obj.initiateService(new BytecodeProviderInitiator());
 			var requestBody = requestEvent.getBody();
