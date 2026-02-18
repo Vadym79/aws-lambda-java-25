@@ -3,8 +3,6 @@
 
 package software.amazonaws.example.product.handler;
 
-import org.hibernate.annotations.SQLInsert;
-
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
@@ -15,19 +13,31 @@ import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazonaws.example.product.dao.ProductDao;
 import software.amazonaws.example.product.entity.Product;
 
+import java.util.ServiceLoader;
+
 public class CreateProductHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	private static final ProductDao productDao= new ProductDao();
+	//private static final ProductDao productDao= new ProductDao();
 
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
 		try {
+			
+			ServiceLoader<org.hibernate.bytecode.spi.BytecodeProvider> loader =
+			    ServiceLoader.load(org.hibernate.bytecode.spi.BytecodeProvider.class);
+			
+			for (org.hibernate.bytecode.spi.BytecodeProvider impl : loader) {
+			    context.getLogger().log("impl found: "+impl.getClass());
+			}
+
+
 			var requestBody = requestEvent.getBody();
 			var product = objectMapper.readValue(requestBody, Product.class);
-	        productDao.createProduct(product);
+	        //int id =productDao.createProduct(product);
+			int id=0;
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.CREATED)
-					.withBody("Product with id = " + product.getId() + " created");
+					.withBody("Product with id = " + id + " created");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.INTERNAL_SERVER_ERROR)

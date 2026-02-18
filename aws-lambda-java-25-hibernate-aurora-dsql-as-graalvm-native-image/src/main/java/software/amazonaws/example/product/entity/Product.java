@@ -4,13 +4,18 @@ package software.amazonaws.example.product.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.GenerationType;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "products")
 public class Product implements Serializable {
 
-  @Id	
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @SequenceGenerator(sequenceName = "product_id", allocationSize = 1)
   private int id;
   private String name;
   private int price;
