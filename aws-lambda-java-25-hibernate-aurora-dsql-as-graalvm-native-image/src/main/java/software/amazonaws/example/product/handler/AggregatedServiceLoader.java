@@ -177,6 +177,7 @@ abstract class AggregatedServiceLoader<S> {
 		 */
 		private void collectServiceIfNotDuplicate(Set<S> result, Set<String> alreadyEncountered, ServiceLoader.Provider<S> provider) {
 			final Class<? extends S> type = provider.type();
+			System.out.println("provider "+provider);
 			String typeName = type.getName();
 			if ( alreadyEncountered.add( typeName ) ) {
 				result.add( provider.get() );
