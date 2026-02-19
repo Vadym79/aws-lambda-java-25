@@ -1,0 +1,7 @@
+{
+  "resources":{
+  "excludes":[{
+    "pattern":"\\QMETA-INF/services/org.hibernate.bytecode.spi.BytecodeProvider\\E"
+  }]},
+  "bundles":[]
+}

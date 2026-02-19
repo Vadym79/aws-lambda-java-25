@@ -18,20 +18,21 @@ import software.amazonaws.example.product.entity.Product;
 public class CreateProductHandler implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
 	private final ObjectMapper objectMapper = new ObjectMapper();
-	//private static final ProductDao productDao= new ProductDao();
+	private static final ProductDao productDao= new ProductDao();
 
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
 		try {
+			/*
 			StandardServiceRegistryImpl  obj=StandardServiceRegistryImpl.create
 					(new BootstrapServiceRegistryImpl() , List.of(new BytecodeProviderInitiator()), 
 							List.of(), Map.of());
 			
 			obj.initiateService(new BytecodeProviderInitiator());
+			*/
 			var requestBody = requestEvent.getBody();
 			var product = objectMapper.readValue(requestBody, Product.class);
-	        //int id =productDao.createProduct(product);
-			int id=0;
+	        int id =productDao.createProduct(product);
 			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.CREATED)
 					.withBody("Product with id = " + id + " created");
 		} catch (Exception e) {
