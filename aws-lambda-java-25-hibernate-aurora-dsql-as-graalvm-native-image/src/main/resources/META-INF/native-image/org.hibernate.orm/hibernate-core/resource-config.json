@@ -1,7 +1,0 @@
-{
-  "resources":{
-  "includes":[{
-    "pattern":"\\QMETA-INF/services/java.sql.Driver\\E"
-  }]},
-  "bundles":[]
-}

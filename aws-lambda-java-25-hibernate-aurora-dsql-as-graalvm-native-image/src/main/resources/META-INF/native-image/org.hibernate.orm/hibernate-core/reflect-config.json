@@ -67,7 +67,7 @@
     "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
-    "name": "org.hibernate.bytecode.internal.bytebuddy.BytecodeProviderImpl",
+    "name": "org.hibernate.bytecode.internal.none.BytecodeProviderImpl",
     "allDeclaredConstructors" : true,
     "allPublicConstructors" : true,
     "allDeclaredMethods" : true,

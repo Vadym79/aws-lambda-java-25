@@ -3,7 +3,7 @@
   "includes":[
 	{
     "pattern":"\\Qorg/hibernate/hibernate-mapping-3.0.dtd\\E"
-    },
+  },
 	{
 	"pattern":"\\Qorg/hibernate/hibernate-mapping-4.0.xsd\\E"
 	},

@@ -125,6 +125,16 @@
 				<version>3.6.1</version>
 				<configuration>
 					<createDependencyReducedPom>false</createDependencyReducedPom>
+					<!--
+					<filters>
+                       <filter>
+                          <artifact>*:*</artifact>
+                          <excludes>
+                              <exclude>META-INF/services/org.hibernate.bytecode.spi.BytecodeProvider</exclude>
+                          </excludes>
+                       </filter>
+                   </filters>
+                   -->
 				</configuration>
 				<executions>
 					<execution>
@@ -155,6 +165,37 @@
                 </executions>
             </plugin>
             -->
+          		<plugin>
+			<groupId>org.graalvm.buildtools</groupId>
+			<artifactId>native-maven-plugin</artifactId>
+			<version>0.11.4</version>
+			<configuration>
+			  <mainClass>com.formkiq.lambda.runtime.graalvm.LambdaRuntime</mainClass>
+	          <imageName>aws-lambda-java-25-with-hibernate-and-aurora-dsql-as-graalvm-native-image</imageName>
+			   <buildArgs>
+	               <buildArg> --no-fallback </buildArg>
+	               <buildArg> --enable-http </buildArg>
+	               <buildArg> -H:ReflectionConfigurationFiles=src/main/reflect.json </buildArg>
+	               <buildArg> -H:ResourceConfigurationFiles=src/main/resource-config.json </buildArg>
+	               <buildArg> -H:Preserve=package=org.hibernate.event.spi </buildArg>
+				</buildArgs>
+				<classpath>
+					<param>
+						${project.build.directory}/${project.artifactId}-${project.version}.jar
+					</param>
+				</classpath>
+			</configuration>
+			<executions>
+				<execution>
+					<id>build-native</id>
+					<goals>
+						<goal>compile-no-fork</goal>
+					</goals>
+					<phase>package</phase>
+				</execution>
+			</executions>
+		</plugin>
+       <!--
 	     <plugin>
 	        <groupId>org.graalvm.nativeimage</groupId>
 	        <artifactId>native-image-maven-plugin</artifactId>
@@ -171,16 +212,10 @@
 	          <skip>false</skip>
 	          <mainClass>com.formkiq.lambda.runtime.graalvm.LambdaRuntime</mainClass>
 	          <imageName>aws-lambda-java-25-with-hibernate-and-aurora-dsql-as-graalvm-native-image</imageName>
-	          <buildArgs>
-	            --no-fallback
-	            --enable-http
-	            -H:ReflectionConfigurationFiles=../src/main/reflect.json
-	            -H:ResourceConfigurationFiles=../src/main/resource-config.json
-	            -H:ExcludeResources=../src/main/resource-exclude-config.json
-	            -H:Preserve=package=org.hibernate.event.spi,org.hibernate.internal.log
-	          </buildArgs>
+	          
 	        </configuration>
 	      </plugin>
+	      -->
           <plugin>
               <artifactId>maven-assembly-plugin</artifactId>
               <executions>
