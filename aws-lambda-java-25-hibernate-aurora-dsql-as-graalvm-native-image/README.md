@@ -49,7 +49,7 @@ sam deploy -g --region us-east-1
  
 2) Execute these sql statements to create table and sequences   
 
-CREATE TABLE products (id int PRIMARY KEY,  name varchar (256) NOT NULL, price int NOT NULL);
+CREATE TABLE products (id int PRIMARY KEY,  name varchar (256) NOT NULL, price int NOT NULL);  
 CREATE SEQUENCE product_id CACHE 1;     
 
 3) Populate some data  
