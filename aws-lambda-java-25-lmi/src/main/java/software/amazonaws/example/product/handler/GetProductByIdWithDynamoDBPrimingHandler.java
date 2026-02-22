@@ -3,6 +3,11 @@
 
 package software.amazonaws.example.product.handler;
 
+import java.util.Optional;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
@@ -13,18 +18,25 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazonaws.example.product.dao.DynamoProductDao;
 import software.amazonaws.example.product.dao.ProductDao;
+import software.amazonaws.example.product.entity.Product;
 
-
-public class GetProductByIdHandler
-		implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+public class GetProductByIdWithDynamoDBPrimingHandler implements 
+                 RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent>{
 
 	private static final ProductDao productDao = new DynamoProductDao();
 	private static final ObjectMapper objectMapper = new ObjectMapper();
-
+	private static final Logger logger = LoggerFactory.getLogger(GetProductByIdWithDynamoDBPrimingHandler.class);
+	
+	static {
+		  productDao.getProduct("0"); 
+		  logger.info("preload get product by id 0");
+	 }
+		
+	
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
-		var id = requestEvent.getPathParameters().get("id");
-		var optionalProduct = productDao.getProduct(id);
+		String id = requestEvent.getPathParameters().get("id");
+		Optional<Product> optionalProduct = productDao.getProduct(id);
 		try {
 			if (optionalProduct.isEmpty()) {
 				context.getLogger().log(" product with id " + id + " not found ");
@@ -40,4 +52,5 @@ public class GetProductByIdHandler
 					.withBody("Internal Server Error :: " + je.getMessage());
 		}
 	}
+
 }
