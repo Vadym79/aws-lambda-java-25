@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  AWSLambdaJava25WithDSQLJDBCConnector with LMI
+  AWSLambdaJava25WithAuroraDSQLAndLMI 
   Sample SAM Template
 
 Parameters:
@@ -9,21 +9,6 @@ Parameters:
     Type: String
     Default: prod
     
-  AuroraDSQLClusterId:
-    Description: "Aurora DSQL Cluster ID"
-    Type: String
-
-  Subnets:
-     Description: The list of SubnetIds, for at least two Availability Zones in the
-                   region in your Virtual Private Cloud (VPC)
-     Type: CommaDelimitedList
-     Default: subnet-da8ae881, subnet-f0b73f95, subnet-bdcfba90
-
-  SecurityGroups:
-     Description: The list of SecurityGroupIds
-     Type: CommaDelimitedList  
-     Default: sg-373bd04b
-  
     
 Globals:
   Function:
@@ -35,8 +20,8 @@ Globals:
        MinExecutionEnvironments: 0
        MaxExecutionEnvironments: 0
     CodeUri: target/aws-lambda-java-25-with-aurora-dsql-jdbc-connector-lmi-1.0.0-SNAPSHOT.jar
-    Runtime: java25
-    Timeout: 900 
+    Runtime: java25  
+    Timeout: 30 
     MemorySize: 2048
     Architectures:
       #- arm64
@@ -44,40 +29,38 @@ Globals:
     #Tracing: Active
     Environment:
       Variables:
-        AURORA_DSQL_CLUSTER_ENDPOINT: !Sub ${AuroraDSQLClusterId}.dsql.${AWS::Region}.on.aws
-        REGION: !Sub ${AWS::Region}
-
+        AURORA_DSQL_CLUSTER_ENDPOINT: !Sub ${DSQL}.dsql.${AWS::Region}.on.aws
+        
+             
 Resources:
   MyCapacityProvider:
     Type: AWS::Serverless::CapacityProvider
     Properties:
-      CapacityProviderName: CapacityProviderForLMI
+      CapacityProviderName: CapacityProviderForJava25LMIAndDSQL
       ScalingConfig:
-        MaxVCpuCount: 16
+        MaxVCpuCount: 32
         AverageCPUUtilization: 70.0
-      #InstanceRequirements:
-        #Architectures:
-          # - x86_64
-        #AllowedTypes:
-          # - t3.small
-          # - t2.small
+      InstanceRequirements:
+        Architectures:
+           - x86_64
+        AllowedTypes:
+           - m7a.large
+           - m6a.large
       VpcConfig: 
-        #SubnetIds: !Ref Subnets - should work, but curently doesn't
-        #SecurityGroupIds: !Ref SecurityGroups  - should work, but curently doesn't
         SubnetIds:
-          - subnet-da8ae881
-          - subnet-f0b73f95
-          - subnet-bdcfba90
+          - subnet-0787be4d
+          - subnet-3b852941
+          - subnet-88dc46e0
         SecurityGroupIds:
-          - sg-373bd04b
-
+          - sg-d33029bb
+          
   MyApi:
     Type: AWS::Serverless::Api
     Properties:
       StageName: !Ref Stage
       #TracingEnabled: true
-      Name: AWSLambdaJava25WithDSQLJDBCConnectorWithLMI 
-      Description: Api for AWSLambdaJava25WithDSQLJDBCConnectorWithLMI
+      Name: AWSLambdaJava25WithAuroraDSQLAndLMIAPI 
+      Description: API for AWSLambdaJava25WithDSQLAndLMI
       AccessLogSetting:
         DestinationArn: !Sub ${MyApiLogGroup.Arn} # This Log Group is already created within our SAM Template
         Format: "{'integrationLatency':'$context.integrationLatency', 'latency':'$context.responseLatency', 'requestId':'$context.requestId', 'ip': '$context.identity.sourceIp', 'caller':'$context.identity.caller', 'user':'$context.identity.user','requestTime':'$context.requestTime', 'xrayTraceId':'$context.xrayTraceId', 'wafResponseCode':'$context.wafResponseCode', 'httpMethod':'$context.httpMethod','resourcePath':'$context.resourcePath', 'status':'$context.status','protocol':'$context.protocol', 'responseLength':'$context.responseLength' }"
@@ -103,8 +86,8 @@ Resources:
       ApiStages: 
         - ApiId: !Ref MyApi
           Stage: !Ref Stage
-      UsagePlanName: AWSLambdaJava25WithDSQLJDBCConnectorWithLMI 
-      Description: Usage plan for AWSLambdaJava25WithDSQLJDBCConnectorAPIWithLMI
+      UsagePlanName: AWSLambdaJava25WithAuroraDSQLAndLMIUsagePlan 
+      Description: Usage plan for AWSLambdaJava25WithAuroraDSQLAndLMIAPI
       Quota:
           Limit: 2000000
           Period: DAY
@@ -117,11 +100,11 @@ Resources:
     DependsOn:  
        - MyApiStage
     Properties: 
-      Name: "AWSLambdaJava25WithDSQLJDBCConnectorWithLMIApiKey"
-      Description: "AWSLambdaJava25WithDSQLJDBCConnector with LMI API Key"
+      Name: "AWSLambdaJava25WithAuroraDSQLAndLMIAPIKey"
+      Description: "AWSLambdaJava25WithAuroraDSQLAndLMI API Key"
       Enabled: true
       GenerateDistinctId: false
-      Value: a6ZbcDefQW12BN56WEDQ7LMI
+      Value: a6ZbcDefQW12BN56WEDQ25LMI
       StageKeys:
         - RestApiId: !Ref MyApi
           StageName: !Ref Stage
@@ -136,74 +119,104 @@ Resources:
         UsagePlanId: !Ref MyApiUsagePlan
 
 
-  CreateOrderFunction:
+  PostProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: CreateOrderWithJava25AndDSQLJDBCConnectorWithLMI 
-      Handler: software.amazonaws.example.order.handler.CreateOrderHandler::handleRequest
+      FunctionName: PostProductJava25WithDSQLAndLMI 
+      Handler: software.amazonaws.example.product.handler.CreateProductHandler::handleRequest
       Policies:
         - Version: '2012-10-17' # Policy Document
           Statement:
             - Effect: Allow
               Action:
                 - dsql:DbConnectAdmin
-              Resource: !Sub arn:aws:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${AuroraDSQLClusterId}
-              
+              Resource: 
+                  - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}              
+   
       Events:
-        GetRequestById:
+        PutRequest:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /orders
-            Method: post    
+            Path: /products
+            Method: post
 
 
-  GetOrderByIdFunction:
+  GetProductByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: GetOrderByIdWithJava25AndDSQLJDBCConnectorWithLMI
-      Handler: software.amazonaws.example.order.handler.GetOrderByIdHandler::handleRequest
+      FunctionName: GetProductByIdJava25WithDSQLAndLMI
+      Handler: software.amazonaws.example.product.handler.GetProductByIdHandler::handleRequest
       Policies:
         - Version: '2012-10-17' # Policy Document
           Statement:
             - Effect: Allow
               Action:
                 - dsql:DbConnectAdmin
-              Resource: !Sub arn:aws:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${AuroraDSQLClusterId}
-              
-      Events:
-        GetRequestById:
-          Type: Api
-          Properties:
-            RestApiId: !Ref MyApi
-            Path: /orders/{id}
-            Method: get     
-              
+              Resource: 
+                 - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}
 
-  GetOrdersByCreatedDatesFunction:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: GetOrdersByCreatedDatesWithJava25AndDSQLJDBCConnectorWithLMI
-      Handler: software.amazonaws.example.order.handler.GetOrdersByCreatedDatesHandler::handleRequest
-      Policies:
-        - Version: '2012-10-17' # Policy Document
-          Statement:
-            - Effect: Allow
-              Action:
-                - dsql:DbConnectAdmin
-              Resource: !Sub arn:aws:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${AuroraDSQLClusterId}
-              
       Events:
         GetRequestById:
           Type: Api
           Properties:
             RestApiId: !Ref MyApi
-            Path: /ordersByCreatedDates/{startDate}/{endDate}
+            Path: /products/{id}
             Method: get     
             
 
 
+  GetProductByIdWithAuroraPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDSQLAndLMIAndDSQLPriming
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithDSQLPrimingHandler::handleRequest
+      Policies:
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+            - Effect: Allow
+              Action:
+                - dsql:DbConnectAdmin
+              Resource: 
+                 - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}
+
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithAuroraPriming/{id}
+            Method: get     
+            
+
+  GetProductByIdWithFullPrimingFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: GetProductByIdJava25WithDSQLAndLMIAndFullPriming
+      Handler: software.amazonaws.example.product.handler.GetProductByIdWithFullPrimingHandler::handleRequest
+      Policies:
+          Statement:
+            - Effect: Allow
+              Action:
+                - dsql:DbConnectAdmin
+              Resource: 
+                 - !Sub arn:${AWS::Partition}:dsql:${AWS::Region}:${AWS::AccountId}:cluster/${DSQL}
+
+      Events:
+        GetRequestById:
+          Type: Api
+          Properties:
+            RestApiId: !Ref MyApi
+            Path: /productsWithFullPriming/{id}
+            Method: get     
+            
+
+  DSQL:
+    Type: AWS::DSQL::Cluster
+    Properties:
+      DeletionProtectionEnabled: true 
+
 Outputs:
-  AWSLambdaJava25WithAndDSQLJDBCConnectorAPIWithLMIEndpoint:
-    Description: "API Gateway endpoint URL for Prod stage for AWS Lambda Java 25 and with DSQL JDBC Connector and LMI"
-    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/orders"
+  AWSLambdaJava25WithDSQLAndLMIAPIEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for AWS Lambda Java 25 and Aurora DSQL and Lambda Managed Instances"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/product"

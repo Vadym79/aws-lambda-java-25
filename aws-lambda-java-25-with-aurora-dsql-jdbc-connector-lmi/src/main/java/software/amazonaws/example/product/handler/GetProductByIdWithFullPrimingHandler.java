@@ -1,0 +1,74 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: MIT-0
+
+package software.amazonaws.example.product.handler;
+
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import java.util.Map;
+
+
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
+import com.amazonaws.services.lambda.runtime.serialization.events.LambdaEventSerializers;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import software.amazon.awssdk.http.HttpStatusCode;
+import software.amazonaws.example.product.dao.ProductDao;
+
+
+public class GetProductByIdWithFullPrimingHandler
+		implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
+
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private static final ProductDao productDao= new ProductDao();
+    private static final Logger logger = LoggerFactory.getLogger(GetProductByIdWithFullPrimingHandler.class);
+	
+	static {
+		try {
+			APIGatewayProxyRequestEvent requestEvent = LambdaEventSerializers.serializerFor(APIGatewayProxyRequestEvent.class, GetProductByIdWithFullPrimingHandler.class.getClassLoader())
+					.fromJson(getAPIGatewayProxyRequestEventAsJson());	
+		    handleRequestInternal(requestEvent, new MockLambdaContext());
+		    logger.info("after pre-loading the full APIGateway request");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
+    private static String getAPIGatewayProxyRequestEventAsJson() throws Exception{
+    	final APIGatewayProxyRequestEvent proxyRequestEvent = new APIGatewayProxyRequestEvent ();
+    	proxyRequestEvent.setHttpMethod("GET");
+    	proxyRequestEvent.setPathParameters(Map.of("id","0"));
+    	return objectMapper.writeValueAsString(proxyRequestEvent);		
+    }
+	
+	private static APIGatewayProxyResponseEvent handleRequestInternal(APIGatewayProxyRequestEvent requestEvent, Context context) {
+		var id = requestEvent.getPathParameters().get("id");
+		try {
+			var optionalProduct = productDao.getProductById(Integer.valueOf(id));
+			if (optionalProduct.isEmpty()) {
+				context.getLogger().log(" product with id " + id + " not found ");
+				return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.NOT_FOUND)
+						.withBody("Product with id = " + id + " not found");
+			}
+			context.getLogger().log(" product " + optionalProduct.get() + " found ");
+			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.OK)
+					.withBody(objectMapper.writeValueAsString(optionalProduct.get()));
+		} catch (Exception je) {
+			je.printStackTrace();
+			return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.INTERNAL_SERVER_ERROR)
+					.withBody("Internal Server Error :: " + je.getMessage());
+		}
+	}
+	
+	@Override
+	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
+		return handleRequestInternal(requestEvent, context);
+	}
+
+
+}

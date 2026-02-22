@@ -1,4 +1,4 @@
-package software.amazonaws.example.order.dao;
+package software.amazonaws.example.product.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -21,13 +21,11 @@ public class DsqlDataSourceConfig {
 			+ ":5432/postgres?sslmode=verify-full&sslfactory=org.postgresql.ssl.DefaultJavaSSLFactory"
 			+ "&token-duration-secs=900";
 
-	
+
 	private static HikariDataSource hds;
 	static {
 		
-		System.out.println("url : " + AURORA_DSQL_CLUSTER_ENDPOINT);
-				
-		final HikariConfig config = new HikariConfig();
+		var config = new HikariConfig();
 		config.setUsername("admin");
 		config.setJdbcUrl(JDBC_URL);
 		config.setMaxLifetime(1500 * 1000); // pool connection expiration time in milli seconds, default 30
@@ -36,8 +34,7 @@ public class DsqlDataSourceConfig {
 		hds = new HikariDataSource(config);
 	}
 	
-	
-	
+		
 	/**
 	 * creates jdbc connection backed by Hikari data source pool
 	 * 
@@ -56,14 +53,11 @@ public class DsqlDataSourceConfig {
 	 * @throws SQLException
 	 */
 	public static Connection getJDBCConnection() throws SQLException {
-		long startTime = System.currentTimeMillis();
 		if (jdbConnection == null || jdbConnection.isClosed()) {
-			Properties props = new Properties();
+			var props = new Properties();
 			props.setProperty("user", "admin");
 			jdbConnection = DriverManager.getConnection(JDBC_URL, props);
 		}
-		long endTime=System.currentTimeMillis();
-		System.out.println("time to create jdbc connection in ms "+(endTime-startTime)); 
 		return jdbConnection;
 	}
 
