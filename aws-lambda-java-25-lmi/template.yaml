@@ -47,11 +47,11 @@ Resources:
            - m6a.large
       VpcConfig: 
         SubnetIds:
-          - subnet-da8ae881
-          - subnet-f0b73f95
-          - subnet-bdcfba90
+          - subnet-0787be4d
+          - subnet-3b852941
+          - subnet-88dc46e0
         SecurityGroupIds:
-          - sg-373bd04b
+          - sg-d33029bb
 
   MyApi:
     Type: AWS::Serverless::Api

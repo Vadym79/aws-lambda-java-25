@@ -27,7 +27,7 @@ public class GetProductByIdHandler
 		var optionalProduct = productDao.getProduct(id);
 		try {
 			if (optionalProduct.isEmpty()) {
-				context.getLogger().log(" product with id " + id + " found ");
+				context.getLogger().log(" product with id " + id + " not found ");
 				return new APIGatewayProxyResponseEvent().withStatusCode(HttpStatusCode.NOT_FOUND)
 						.withBody("Product with id = " + id + " not found");
 			}
