@@ -12,17 +12,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import software.amazon.awssdk.http.HttpStatusCode;
 import software.amazonaws.example.product.dao.DynamoProductDao;
-import software.amazonaws.example.product.dao.ProductDao;
 
 
 public class GetProductByIdHandler
 		implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
-	private static final ProductDao productDao = new DynamoProductDao();
-	private static final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Override
 	public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent requestEvent, Context context) {
+	    var productDao = new DynamoProductDao();
+		var objectMapper = new ObjectMapper();
 		var id = requestEvent.getPathParameters().get("id");
 		var optionalProduct = productDao.getProduct(id);
 		try {
