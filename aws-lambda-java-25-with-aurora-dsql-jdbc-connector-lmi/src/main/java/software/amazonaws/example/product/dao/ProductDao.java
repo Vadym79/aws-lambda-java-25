@@ -10,8 +10,8 @@ import software.amazonaws.example.product.entity.Product;
 
 public class ProductDao {
 		
-	@SuppressWarnings("unused")
-	private static final DsqlDataSourceConfig dsqlDataSourceConfig=new DsqlDataSourceConfig();
+	//@SuppressWarnings("unused")
+	//private static final DsqlDataSourceConfig dsqlDataSourceConfig=new DsqlDataSourceConfig();
 	
 	/**
 	 * create a product and return its id
