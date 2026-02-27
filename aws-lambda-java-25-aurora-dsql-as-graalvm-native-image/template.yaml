@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  AWSLambdaJava25WithAuroraDSQLAsGVNM 
+  AWSLambdaJava25WithAuroraDSQLAsGVNI 
   Sample SAM Template
 
 Parameters:
@@ -32,8 +32,8 @@ Resources:
     Properties:
       StageName: !Ref Stage
       #TracingEnabled: true
-      Name: AWSLambdaJava25WithAuroraDSQLAsGVNMAPI 
-      Description: API for AWSLambdaJava25WithDSQLAsGVNM
+      Name: AWSLambdaJava25WithAuroraDSQLAsGVNIAPI 
+      Description: API for AWSLambdaJava25WithDSQLAsGVNI
       AccessLogSetting:
         DestinationArn: !Sub ${MyApiLogGroup.Arn} # This Log Group is already created within our SAM Template
         Format: "{'integrationLatency':'$context.integrationLatency', 'latency':'$context.responseLatency', 'requestId':'$context.requestId', 'ip': '$context.identity.sourceIp', 'caller':'$context.identity.caller', 'user':'$context.identity.user','requestTime':'$context.requestTime', 'xrayTraceId':'$context.xrayTraceId', 'wafResponseCode':'$context.wafResponseCode', 'httpMethod':'$context.httpMethod','resourcePath':'$context.resourcePath', 'status':'$context.status','protocol':'$context.protocol', 'responseLength':'$context.responseLength' }"
@@ -59,8 +59,8 @@ Resources:
       ApiStages: 
         - ApiId: !Ref MyApi
           Stage: !Ref Stage
-      UsagePlanName: AWSLambdaJava25WithAuroraDSQLAsGVNMUsagePlan 
-      Description: Usage plan for AWSLambdaJava25WithAuroraDSQLAsGVNMAPI
+      UsagePlanName: AWSLambdaJava25WithAuroraDSQLAsGVNIUsagePlan 
+      Description: Usage plan for AWSLambdaJava25WithAuroraDSQLAsGVNIAPI
       Quota:
           Limit: 2000000
           Period: DAY
@@ -73,8 +73,8 @@ Resources:
     DependsOn:  
        - MyApiStage
     Properties: 
-      Name: "AWSLambdaJava25WithAuroraDSQLAsGVNMAPIKey"
-      Description: "AWSLambdaJava25WithAuroraDSQLAsGVNM API Key"
+      Name: "AWSLambdaJava25WithAuroraDSQLAsGVNIAPIKey"
+      Description: "AWSLambdaJava25WithAuroraDSQLAsGVNI API Key"
       Enabled: true
       GenerateDistinctId: false
       Value: a6ZbcDefQW12BN56WEDQGVNI25
@@ -95,7 +95,7 @@ Resources:
   PostProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: PostProductJava25WithDSQLAsGVNM 
+      FunctionName: PostProductJava25WithDSQLAsGVNI 
       Handler: software.amazonaws.example.product.handler.CreateProductHandler::handleRequest
       Policies:
         - Version: '2012-10-17' # Policy Document
@@ -125,7 +125,7 @@ Resources:
   GetProductByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: GetProductByIdJava25WithDSQLAsGVNM
+      FunctionName: GetProductByIdJava25WithDSQLAsGVNI
       Handler: software.amazonaws.example.product.handler.GetProductByIdHandler::handleRequest
       Policies:
         - Version: '2012-10-17' # Policy Document
