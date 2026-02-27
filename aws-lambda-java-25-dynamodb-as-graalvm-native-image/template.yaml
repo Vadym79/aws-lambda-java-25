@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  AWSLambdaJava25WithDynamoDBAsGVNM
+  AWSLambdaJava25WithDynamoDBAsGVNI
   Sample SAM Template
 
 Parameters:
@@ -31,8 +31,8 @@ Resources:
     Properties:
       StageName: !Ref Stage
       #TracingEnabled: true
-      Name: AWSLambdaJava25WithDynamoDBAsGVNMAPI
-      Description: API AWSLambdaJava25WithDynamoDBAsGVNM
+      Name: AWSLambdaJava25WithDynamoDBAsGVNIAPI
+      Description: API AWSLambdaJava25WithDynamoDBAsGVNI
       AccessLogSetting:
         DestinationArn: !Sub ${MyApiLogGroup.Arn} # This Log Group is already created within our SAM Template
         Format: "{'integrationLatency':'$context.integrationLatency', 'latency':'$context.responseLatency', 'requestId':'$context.requestId', 'ip': '$context.identity.sourceIp', 'caller':'$context.identity.caller', 'user':'$context.identity.user','requestTime':'$context.requestTime', 'xrayTraceId':'$context.xrayTraceId', 'wafResponseCode':'$context.wafResponseCode', 'httpMethod':'$context.httpMethod','resourcePath':'$context.resourcePath', 'status':'$context.status','protocol':'$context.protocol', 'responseLength':'$context.responseLength' }"
@@ -59,8 +59,8 @@ Resources:
       ApiStages: 
         - ApiId: !Ref MyApi
           Stage: !Ref Stage
-      UsagePlanName: AWSLambdaJava25WitDynamoDBAsGVNMUsagePlan
-      Description: Usage plan for AWSLambdaJava25WithDynamoDBAsGVNMAPI
+      UsagePlanName: AWSLambdaJava25WitDynamoDBAsGVNIUsagePlan
+      Description: Usage plan for AWSLambdaJava25WithDynamoDBAsGVNIAPI
       Quota:
           Limit: 2000000
           Period: DAY
@@ -73,8 +73,8 @@ Resources:
     DependsOn:  
        - MyApiStage
     Properties: 
-      Name: "AWSLambdaJava25WithDynamoDBAsGVNMAPIKey"
-      Description: "AWSLambdaJava25WithDynamoDBAsGVNM API Key"
+      Name: "AWSLambdaJava25WithDynamoDBAsGVNIAPIKey"
+      Description: "AWSLambdaJava25WithDynamoDBAsGVNI API Key"
       Enabled: true
       GenerateDistinctId: false
       Value: a6ZbcDefQW12BN56WEVDDBGVNI25
@@ -95,7 +95,7 @@ Resources:
   PostProductFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: PostProductJava25WithDynamoDBAsGVNM 
+      FunctionName: PostProductJava25WithDynamoDBAsGVN 
       Handler: software.amazonaws.example.product.handler.CreateProductHandler::handleRequest
       Policies:
         - DynamoDBCrudPolicy:
@@ -119,7 +119,7 @@ Resources:
   GetProductByIdFunction:
     Type: AWS::Serverless::Function
     Properties:
-      FunctionName: GetProductByIdJava25WithDynamoDBAsGVNM
+      FunctionName: GetProductByIdJava25WithDynamoDBAsGVNI
       Handler: software.amazonaws.example.product.handler.GetProductByIdHandler::handleRequest
       Policies:
         - DynamoDBReadPolicy:
@@ -142,7 +142,7 @@ Resources:
   ProductsTable:
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: "AWSLambdaJava25AsGVNMProductsTable"
+      TableName: "AWSLambdaJava25AsGVNIProductsTable"
       PointInTimeRecoverySpecification:
          PointInTimeRecoveryEnabled: true
       AttributeDefinitions:
@@ -158,6 +158,6 @@ Resources:
       
 
 Outputs:
-  AWSLambdaJava25WithDynamoDBAsGVNMAPIEndpoint:
+  AWSLambdaJava25WithDynamoDBAsGVNIAPIEndpoint:
     Description: "API Gateway endpoint URL for Prod stage for AWS Lambda Java 25 and DynamoDB as GraalVM Native Image"
     Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/prod/products"
