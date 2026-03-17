@@ -1,4 +1,4 @@
-# Example of Lambda with Custom Runtime based on GraalVM Native Image with Java 25 using Amazon Aurora DSQL database  
+# Example of Lambda with Custom Runtime based on GraalVM Native Image with Java 25 using JDBC and Amazon Aurora DSQL database  
 
 
 ## Architecture
