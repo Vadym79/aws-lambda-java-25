@@ -1,4 +1,4 @@
-# Example of Lambda with managed Java 25 runtime using Hibernate as an ORM framework and Amazon Aurora DSQL database 
+# Example of Lambda with managed Java 25 runtime using Hibernate as an ORM framework, Hikari Connection Pool and Amazon Aurora DSQL database 
 
 
 ## Architecture
