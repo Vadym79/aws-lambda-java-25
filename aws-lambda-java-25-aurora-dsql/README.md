@@ -1,4 +1,4 @@
-# Example of Lambda with managed Java 25 runtime using Amazon Aurora DSQL  
+# Example of Lambda with managed Java 25 runtime using JDBC and Amazon Aurora DSQL  
 
 
 ## Architecture
