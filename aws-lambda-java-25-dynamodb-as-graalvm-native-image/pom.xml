@@ -136,7 +136,7 @@
 	          <buildArgs>
 	            --no-fallback
 	            --enable-http
-	            -H:ReflectionConfigurationFiles=../src/main/reflect.json
+	            -H:ReflectionConfigurationFiles=../src/main/reflection-config.json
 	          </buildArgs>
 	        </configuration>
 	      </plugin>
@@ -154,6 +154,7 @@
               </executions>
               <configuration>
                  <finalName>function</finalName>
+                 <appendAssemblyId>false</appendAssemblyId>
                  <descriptors>
                     <descriptor>src/assembly/native.xml</descriptor>
                  </descriptors>
