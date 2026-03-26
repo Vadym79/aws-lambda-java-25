@@ -175,7 +175,7 @@
 			   <buildArgs>
 	               <buildArg> --no-fallback </buildArg>
 	               <buildArg> --enable-http </buildArg>
-	               <buildArg> -H:ReflectionConfigurationFiles=src/main/reflection-config.json </buildArg>
+	               <buildArg> -H:ReflectionConfigurationFiles=src/main/reflect-config.json </buildArg>
 	               <buildArg> -H:ResourceConfigurationFiles=src/main/resource-config.json </buildArg>
 	               <buildArg> -H:Preserve=package=org.hibernate.event.spi </buildArg>
 				</buildArgs>
