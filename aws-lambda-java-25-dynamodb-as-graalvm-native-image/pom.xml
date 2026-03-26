@@ -136,7 +136,7 @@
 	          <buildArgs>
 	            --no-fallback
 	            --enable-http
-	            -H:ReflectionConfigurationFiles=../src/main/reflection-config.json
+	            -H:ReflectionConfigurationFiles=../src/main/reflect-config.json
 	          </buildArgs>
 	        </configuration>
 	      </plugin>
