@@ -60,43 +60,16 @@ The application consists of:
 
 ## Installation
 
-### 1. Install SDKMAN and GraalVM
+### 1. Install SDKMAN and GraalVM and Native Image (on Linux)
 
 ```bash
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# Install GraalVM for Java 25
 sdk install java 25.0.2-graal
-sdk use java 25.0.2-graal
-```
 
-### 2. Install Native Image Dependencies
+sudo yum install gcc glibc-devel zlib-devel   
+sudo dnf install gcc glibc-devel zlib-devel libstdc++-static 
 
-**Amazon Linux 2023 / RHEL / Fedora:**
-```bash
-sudo dnf install gcc glibc-devel zlib-devel libstdc++-static
-```
-
-**Amazon Linux 2 / CentOS:**
-```bash
-sudo yum install gcc glibc-devel zlib-devel
-```
-
-**Ubuntu / Debian:**
-```bash
-sudo apt-get install build-essential libz-dev zlib1g-dev
-```
-
-### 3. Install Maven
-
-```bash
-sudo yum install maven
-# or
-sudo dnf install maven
-# or
-sudo apt-get install maven
-```
 
 ## Build
 

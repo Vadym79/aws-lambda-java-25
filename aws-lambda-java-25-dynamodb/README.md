@@ -4,6 +4,10 @@ A serverless application demonstrating AWS Lambda functions using the managed Ja
 
 ## Architecture
 
+<p align="center">
+  <img src="src/main/resources/img/app_arch.png" alt="Application Architecture"/>
+</p>
+
 The application provides a REST API for managing products with the following components:
 
 - **API Gateway**: REST API with API key authentication

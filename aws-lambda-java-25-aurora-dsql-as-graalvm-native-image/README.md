@@ -15,6 +15,10 @@ This project showcases a modern serverless architecture using:
 
 ## Architecture
 
+<p align="center">
+  <img src="src/main/resources/img/app_arch.png" alt="Application Architecture"/>
+</p>
+
 The application exposes a REST API for managing products with the following endpoints:
 - `POST /products` - Create a new product
 - `GET /products/{id}` - Retrieve a product by ID
@@ -40,15 +44,16 @@ The application exposes a REST API for managing products with the following endp
 
 ## Installation
 
-### 1. Install GraalVM and Native Image
+### 1. Install GraalVM and Native Image (on Linux)
 
 ```bash
-# Install SDKMAN
 curl -s "https://get.sdkman.io" | bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-# Install GraalVM 25
 sdk install java 25.0.2-graal
+
+sudo yum install gcc glibc-devel zlib-devel   
+sudo dnf install gcc glibc-devel zlib-devel libstdc++-static  
+```
 
 # Set JAVA_HOME
 export JAVA_HOME=$HOME/.sdkman/candidates/java/25.0.2-graal/
@@ -57,13 +62,7 @@ export JAVA_HOME=$HOME/.sdkman/candidates/java/25.0.2-graal/
 sudo dnf install gcc glibc-devel zlib-devel libstdc++-static
 ```
 
-### 2. Install Maven
-
-```bash
-sudo dnf install maven
-```
-
-### 3. Clone the Repository
+### 2. Clone the Repository
 
 ```bash
 git clone https://github.com/Vadym79/aws-lambda-java-25.git
