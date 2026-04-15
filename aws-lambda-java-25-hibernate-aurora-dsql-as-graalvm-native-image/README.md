@@ -5,7 +5,7 @@ A serverless product catalog API built with Java 25, compiled to a GraalVM Nativ
 ## Architecture
 
 <p align="center">
-  <img src="/aws-lambda-java-25-aurora-dsql-as-graalvm-native-image/src/main/resources/img/app_arch.png" alt="Application Architecture"/>
+  <img src="src/main/resources/img/app_arch.png" alt="Application Architecture"/>
 </p>
 
 ```
