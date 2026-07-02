@@ -1,12 +1,13 @@
-package software.amazonaws;
+package dev.vkazulkin;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
 
-import software.amazonaws.example.product.controller.ProductController;
+import dev.vkazulkin.controller.AuthorContentExtractorController;
 
-@Import({ProductController.class })
+
+@Import({AuthorContentExtractorController.class })
 @SpringBootApplication
 public class Application {
 

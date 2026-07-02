@@ -9,8 +9,6 @@ import software.amazon.awssdk.services.s3.S3Client;
 import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
 import software.amazon.awssdk.http.HttpStatusCode;
-import tools.jackson.databind.ObjectMapper;
-
 
 public class GetAuthorContentResult
 		implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
