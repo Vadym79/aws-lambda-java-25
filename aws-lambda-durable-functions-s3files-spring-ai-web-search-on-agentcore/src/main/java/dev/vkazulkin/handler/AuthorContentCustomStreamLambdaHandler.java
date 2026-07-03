@@ -16,12 +16,10 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestStreamHandler;
 
 import dev.vkazulkin.Application;
-//import tools.jackson.databind.ObjectMapper;
 
 
 abstract class AuthorContentCustomStreamLambdaHandler implements RequestStreamHandler {
 	
-	//private static final ObjectMapper objectMapper = new ObjectMapper();
 	private static final Logger logger = LoggerFactory.getLogger(AuthorContentCustomStreamLambdaHandler.class);
 	
     private static SpringBootLambdaContainerHandler<AwsProxyRequest, AwsProxyResponse> handler;
@@ -37,11 +35,10 @@ abstract class AuthorContentCustomStreamLambdaHandler implements RequestStreamHa
     @Override
     public void handleRequest(InputStream inputStream, OutputStream outputStream, Context context)
             throws IOException {
-    	logger.info("entered generic stream lambda handler");
+    	logger.info("entered handleRequest");
     	var author = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
     	logger.info("input stream "+author );    
     	var proxyRequestEvent=getAwsProxyRequest(author);
-    	//logger.info("request: "+ objectMapper.writeValueAsString(proxyRequestEvent));
 	    var response = handler.proxy(proxyRequestEvent, context);
 	    var body =response.getBody();
 	    logger.info("body "+body );
@@ -65,6 +62,7 @@ abstract class AuthorContentCustomStreamLambdaHandler implements RequestStreamHa
 		var headers= new Headers();
 		headers.add("Content-Type", "application/json");
 		awsProxyRequest.setMultiValueHeaders(headers);
+		
       	//awsProxyRequest.setPathParameters(Map.of());
       	//awsProxyRequest.setQueryStringParameters(Map.of());
     	
