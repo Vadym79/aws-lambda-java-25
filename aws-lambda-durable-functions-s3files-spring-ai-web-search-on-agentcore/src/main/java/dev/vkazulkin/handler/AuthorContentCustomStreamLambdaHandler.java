@@ -48,7 +48,7 @@ abstract class AuthorContentCustomStreamLambdaHandler implements RequestStreamHa
 	    try (var printStream = new PrintStream(outputStream, true, StandardCharsets.UTF_8)) {
 	        printStream.print(body);
 	    }
-	    logger.info("finished ");    
+	    logger.info("finished handleRequest");    
     }
 
 	

@@ -16,8 +16,8 @@ Globals:
     Runtime: java25
     #SnapStart:
       #ApplyOn: PublishedVersions
-    Timeout: 30 
-    MemorySize: 1024
+    Timeout: 240
+    MemorySize: 1536
     Architectures:
       #- arm64
       - x86_64  
@@ -283,6 +283,33 @@ Resources:
       #AutoPublishAlias: liveVersion
       #Handler: com.amazonaws.serverless.proxy.spring.SpringDelegatingLambdaContainerHandler
       Handler: dev.vkazulkin.handler.YouTubeVideosStreamLambdaHandler::handleRequest
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Sid: AllowedCognitoActions
+              Effect: Allow
+              Action:
+                - cognito-idp:ListUserPools
+                - cognito-idp:ListUserPoolClients
+                - cognito-idp:DescribeUserPoolClient
+              Resource: '*'
+            - Sid: InvokeGateway
+              Effect: Allow
+              Action:
+                - bedrock-agentcore:*Gateway*
+                - bedrock-agentcore:*WorkloadIdentity
+                - bedrock-agentcore:*CredentialProvider
+                - bedrock-agentcore:*Token*
+                - bedrock-agentcore:*Access*
+              Resource: 'arn:aws:bedrock-agentcore:*:*:*gateway*'
+            - Sid: InvokeBedrock
+              Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - bedrock:InvokeModelWithResponseStream
+                - bedrock:Converse
+                - bedrock:ConverseStream
+              Resource: '*'
       Events:
         PostRequest:
           Type: Api
@@ -290,6 +317,7 @@ Resources:
             RestApiId: !Ref MyApi
             Path: /author/content/youtubeVideos
             Method: post
+
 
 
   YouTubeVideosLogGroup:
@@ -305,6 +333,33 @@ Resources:
       #AutoPublishAlias: liveVersion
       #Handler: com.amazonaws.serverless.proxy.spring.SpringDelegatingLambdaContainerHandler
       Handler: dev.vkazulkin.handler.UpcomingTalksStreamLambdaHandler::handleRequest
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Sid: AllowedCognitoActions
+              Effect: Allow
+              Action:
+                - cognito-idp:ListUserPools
+                - cognito-idp:ListUserPoolClients
+                - cognito-idp:DescribeUserPoolClient
+              Resource: '*'
+            - Sid: InvokeGateway
+              Effect: Allow
+              Action:
+                - bedrock-agentcore:InvokeGateway
+                - bedrock-agentcore:*WorkloadIdentity
+                - bedrock-agentcore:*CredentialProvider
+                - bedrock-agentcore:*Token*
+                - bedrock-agentcore:*Access*
+              Resource: 'arn:aws:bedrock-agentcore:*:*:*gateway*'
+            - Sid: InvokeBedrock
+              Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+                - bedrock:InvokeModelWithResponseStream
+                - bedrock:Converse
+                - bedrock:ConverseStream
+              Resource: '*'
       Events:
         PostRequest:
           Type: Api
@@ -312,7 +367,6 @@ Resources:
             RestApiId: !Ref MyApi
             Path: /author/content/upcomingTalks
             Method: post
-
 
 
   UpcomingTalksLogGroup:

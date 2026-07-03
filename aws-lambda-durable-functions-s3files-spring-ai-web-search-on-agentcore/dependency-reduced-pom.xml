@@ -37,13 +37,7 @@
             </goals>
           </execution>
         </executions>
-        <configuration>
-          <artifactSet>
-            <excludes>
-              <exclude>org.apache.tomcat.embed:*</exclude>
-            </excludes>
-          </artifactSet>
-        </configuration>
+        <configuration />
       </plugin>
     </plugins>
   </build>
@@ -65,10 +59,6 @@
           <groupId>org.springframework.boot</groupId>
         </exclusion>
         <exclusion>
-          <artifactId>spring-boot-starter-tomcat</artifactId>
-          <groupId>org.springframework.boot</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>spring-boot-starter-data-jpa</artifactId>
           <groupId>org.springframework.boot</groupId>
         </exclusion>
@@ -81,9 +71,33 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-starter-model-bedrock-converse</artifactId>
+      <version>2.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.ai</groupId>
+      <artifactId>spring-ai-starter-mcp-client</artifactId>
+      <version>2.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
       <groupId>software.amazon.awssdk</groupId>
       <artifactId>s3</artifactId>
       <version>2.46.17</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>software.amazon.awssdk</groupId>
+      <artifactId>cognitoidentityprovider</artifactId>
+      <version>2.46.17</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents.client5</groupId>
+      <artifactId>httpclient5</artifactId>
+      <version>5.6.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -120,6 +134,13 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
+        <groupId>org.springframework.ai</groupId>
+        <artifactId>spring-ai-bom</artifactId>
+        <version>${spring-ai.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <dependency>
         <groupId>software.amazon.awssdk</groupId>
         <artifactId>bom</artifactId>
         <version>2.46.17</version>
@@ -132,6 +153,7 @@
     <release.version>25</release.version>
     <packaging>jar</packaging>
     <jdk.version>25</jdk.version>
+    <spring-ai.version>2.0.0</spring-ai.version>
     <maven.build.timestamp.format>yyyyMMdd'T'HHmmss</maven.build.timestamp.format>
   </properties>
 </project>
