@@ -72,7 +72,7 @@ public class AuthorContentExtractorController {
     
     private static final Logger logger = LoggerFactory.getLogger(AuthorContentExtractorController.class);
  
-    public AuthorContentExtractorController(ChatClient.Builder builder, @Value("${aws.region}") String awsRegion) {
+    public AuthorContentExtractorController(ChatClient.Builder builder) {
         var options = ToolCallingChatOptions.builder()
                 //.model("us.anthropic.claude-sonnet-4-6")
         		.model("amazon.nova-pro-v1:0")
@@ -82,7 +82,7 @@ public class AuthorContentExtractorController {
                 .defaultOptions(options)
                 //.defaultSystem(SYSTEM_PROMPT)
                 .build();
-        cognitoClient = CognitoIdentityProviderClient.builder().region(Region.of(awsRegion)).build();
+        cognitoClient = CognitoIdentityProviderClient.builder().region(Region.of(System.getenv("REGION"))).build();
     }
     
 
