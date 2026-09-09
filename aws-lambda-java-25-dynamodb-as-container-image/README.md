@@ -1,6 +1,6 @@
-# AWS Lambda Java 25 with DynamoDB
+# AWS Lambda with Java 25 and DynamoDB deployed as a Container Image
 
-A serverless application demonstrating AWS Lambda functions using the managed Java 25 runtime with Amazon DynamoDB for product management.
+A serverless application demonstrating AWS Lambda functions using the container image based on Java 25 with Amazon DynamoDB for product management.
 
 ## Architecture
 
@@ -55,14 +55,14 @@ Compile and package the application:
 mvn clean package
 ```
 
-This creates a shaded JAR at `target/aws-lambda-java-25-with-dynamodb-1.0.0-SNAPSHOT.jar`.
+This creates a shaded JAR at `target/aws-lambda-java-25-with-dynamodb-as-container-image-1.0.0-SNAPSHOT.jar`.
 
 ## Deploy
 
 Deploy using AWS SAM:
 
 ```bash
-sam deploy -g --region us-east-1
+sam deploy -g --region us-east-1  --image-repository {YOUR_ECR_REPO}
 ```
 
 Follow the prompts to configure:
@@ -79,7 +79,7 @@ After deployment, the API Gateway endpoint will be displayed in the outputs.
 ```bash
 POST /products
 Content-Type: application/json
-x-api-key: a6ZbcDefQW12BN56WEVDDB25
+x-api-key: a6ZbcDefQW12BN56WEVDDB25CI
 
 {
   "id": "1",
@@ -91,19 +91,19 @@ x-api-key: a6ZbcDefQW12BN56WEVDDB25
 ### Get Product by ID
 ```bash
 GET /products/{id}
-x-api-key: a6ZbcDefQW12BN56WEVDDB25
+x-api-key: a6ZbcDefQW12BN56WEVDDB25CI
 ```
 
 ### Get Product with DynamoDB Priming
 ```bash
 GET /productsWithDynamoDBPriming/{id}
-x-api-key: a6ZbcDefQW12BN56WEVDDB25
+x-api-key: a6ZbcDefQW12BN56WEVDDB25CI
 ```
 
 ### Get Product with Full Priming
 ```bash
 GET /productsWithFullPriming/{id}
-x-api-key: a6ZbcDefQW12BN56WEVDDB25
+x-api-key: a6ZbcDefQW12BN56WEVDDB25CI
 ```
 
 ## Configuration
