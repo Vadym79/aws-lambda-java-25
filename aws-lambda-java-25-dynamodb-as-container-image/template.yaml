@@ -11,8 +11,8 @@ Parameters:
     
 Globals:
   Function:
-    #SnapStart:
-      #ApplyOn: PublishedVersions
+    SnapStart:
+      ApplyOn: PublishedVersions
     Timeout: 30 
     MemorySize: 1024
     Architectures:
