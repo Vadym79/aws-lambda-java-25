@@ -98,7 +98,7 @@ Resources:
       FunctionName: PostProductJava25WithDSQLAsCI
       AutoPublishAlias: liveVersion
       PackageType: Image
-      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-with-aurora-dsql:v1
+      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-aurora-dsql:v1
       ImageConfig:
         Command: [ "software.amazonaws.example.product.handler.CreateProductHandler::handleRequest" ]
       Policies:
@@ -132,7 +132,7 @@ Resources:
       FunctionName: GetProductByIdJava25WithDSQLAsCI
       AutoPublishAlias: liveVersion
       PackageType: Image
-      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-with-aurora-dsql:v1
+      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-aurora-dsql:v1
       ImageConfig:
         Command: [ "software.amazonaws.example.product.handler.GetProductByIdHandler::handleRequest" ]
       Policies:
@@ -166,7 +166,7 @@ Resources:
       FunctionName: GetProductByIdJava25WithDSQLAndDSQLPrimingAsCI
       AutoPublishAlias: liveVersion
       PackageType: Image
-      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-with-aurora-dsql:v1
+      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-aurora-dsql:v1
       ImageConfig:
         Command: [ "software.amazonaws.example.product.handler.GetProductByIdWithDSQLPrimingHandler::handleRequest" ]
       Policies:
@@ -200,7 +200,7 @@ Resources:
       FunctionName: GetProductByIdJava25WithDSQLAndFullPrimingAsCI
       AutoPublishAlias: liveVersion
       PackageType: Image
-      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-with-aurora-dsql:v1
+      ImageUri: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/aws-lambda-java-25-aurora-dsql:v1
       ImageConfig:
         Command: [ "software.amazonaws.example.product.handler.GetProductByIdWithFullPrimingHandler::handleRequest" ]
       Policies:
