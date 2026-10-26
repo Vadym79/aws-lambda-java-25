@@ -11,7 +11,7 @@ A serverless application demonstrating AWS Lambda functions using the managed Ja
 The application provides a REST API for managing products with the following components:
 
 - **API Gateway**: REST API with API key authentication
-- **Lambda Functions**: Four Lambda functions with SnapStart enabled and additionally with the new Java SDK warm up functionallity
+- **Lambda Functions**: Four Lambda functions with SnapStart enabled and additionally with the new Java SDK warm up functionality
   - `PostProductFunction`: Creates new products
   - `GetProductByIdFunction`: Retrieves products by ID
   - `GetProductByIdWithDynamoDBPrimingFunction`: Retrieves products with DynamoDB priming optimization
