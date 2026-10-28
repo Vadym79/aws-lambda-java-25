@@ -18,6 +18,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import software.amazon.awssdk.core.warmup.SdkWarmUp;
 import software.amazon.awssdk.http.HttpStatusCode;
+import software.amazon.awssdk.services.dsql.DsqlClient;
 import software.amazonaws.example.product.dao.ProductDao;
 
 
@@ -35,7 +36,8 @@ public class GetProductByIdWithDSQLPrimingHandler
 	@Override
 	public void beforeCheckpoint(org.crac.Context<? extends Resource> context) throws Exception {
 		logger.info("before applying a custom priming");
-		SdkWarmUp.warmUp();
+		//SdkWarmUp.warmUp();
+		SdkWarmUp.warmUp(DsqlClient.class);
 		productDao.getProductById(0);
 		logger.info("after applying a custom priming");
     }

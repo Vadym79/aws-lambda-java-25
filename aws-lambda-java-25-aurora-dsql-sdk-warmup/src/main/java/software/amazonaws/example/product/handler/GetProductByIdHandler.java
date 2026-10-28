@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import software.amazon.awssdk.core.warmup.SdkWarmUp;
 import software.amazon.awssdk.http.HttpStatusCode;
+import software.amazon.awssdk.services.dsql.DsqlClient;
 import software.amazonaws.example.product.dao.ProductDao;
 
 
@@ -22,7 +23,8 @@ public class GetProductByIdHandler
 	private static final ProductDao productDao= new ProductDao();
 	
 	public GetProductByIdHandler () {
-		SdkWarmUp.warmUp();
+		//SdkWarmUp.warmUp();
+		SdkWarmUp.warmUp(DsqlClient.class);
 	}
 
 
